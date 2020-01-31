@@ -29,8 +29,8 @@
   </div>
   <div class="container" *ngIf="showcats">
     <div class="row row-cols-3 row-cols-lg-3 row-cols-md-3 row-cols-sm-3">
-      <div class="col meal-category" *ngFor="let subcategory of subcats" (click)="cartservice.addToCart(subcategory)">
-        <div class="cat-bg">
+      <div class="col meal-category" *ngFor="let subcategory of subcats">
+        <div class="cat-bg"  (click)="cartservice.addToCart(subcategory)">
           <span class="cat-name">{{subcategory.name}}</span>
           <p class="cat-price">{{subcategory.price}} $</p>
         </div>
@@ -73,7 +73,7 @@
         <th scope="row" class="bg-content">
           <p class="order-title2"(clikc)="cartservice.ShowMeal(meal)">
             <!-- ({{mealname})  -->
-            ({{item.meal_id}}) 
+            ({{item.mealname}}) 
             <!-- {{cartservice.showmeal}} -->
             {{item.name}}</p>
         </th>

@@ -17,9 +17,9 @@ export class CustomerComponent implements OnInit {
       name: 'Biryani',
       image: 'assets/dummy/images/bri.jpg',
       subcategories: [
-        {id: 1, name: 'Family', price: 500, tax: 50, disc: 0, quantity: 2, meal_id: 1 },
-        {id: 2, name: 'Plate', price: 300, tax: 50, disc: 0, quantity: 1,  meal_id: 1  },
-        {id: 3, name: 'Half Plate', price: 200, tax: 50, disc: 0, quantity: 1, meal_id: 1  }
+        {id: 1, name: 'Family', price: 500, tax: 50, disc: 0, quantity: 2, mealname: 'Biryani' },
+        {id: 2, name: 'Plate', price: 300, tax: 50, disc: 0, quantity: 1,  mealname: 'Biryani'  },
+        {id: 3, name: 'Half Plate', price: 200, tax: 50, disc: 0, quantity: 1, mealname: 'Biryani'  }
       ]
     },
     {
@@ -27,9 +27,9 @@ export class CustomerComponent implements OnInit {
     name: 'Burger' ,
     image: 'assets/dummy/images/bur.jpg' ,
     subcategories: [
-      {id: 1, name: 'Large', price: 100, tax: 20, disc: 0, quantity: 1, meal_id: 2  },
-      {id: 2, name: 'Medium', price: 80, tax: 20, disc: 0, quantity: 1, meal_id: 2  },
-      {id: 3, name: 'Smal', price: 50, tax: 20, disc: 0, quantity: 1, meal_id: 2  }
+      {id: 1, name: 'Large', price: 100, tax: 20, disc: 0, quantity: 1, mealname: 'Burger'  },
+      {id: 2, name: 'Medium', price: 80, tax: 20, disc: 0, quantity: 1, mealname: 'Burger'  },
+      {id: 3, name: 'Smal', price: 50, tax: 20, disc: 0, quantity: 1, mealname: 'Burger'  }
     ]
   },
     {
