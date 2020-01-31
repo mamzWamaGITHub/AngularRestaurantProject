@@ -1,0 +1,140 @@
+<div class="container wrapper">
+  <div class="row">
+    <div class="col bg-color">
+      <p class="title1">Customer One</p>
+    </div>
+    <div class="col bg-color">
+      <p class="title2">Table 4</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col bg-color1">
+      <p class="menu-title">
+        MENU/DISHES
+      </p>
+    </div>
+  </div>
+  <div class="row  row-cols-lg-6 row-cols-sm-2 row-cols-md-5">
+    <div class="col meal-col"  *ngFor="let meal of meals" (click)="showCats(meal);">
+      <img width="100" height="80" src="{{meal.image}}">
+      <p class="meal-name">{{meal.name}}</p>
+    </div>
+  </div>
+  <div class="row" *ngIf="showcats">
+    <div class="col bg-color1">
+      <p class="menu-title">
+        SUB CATEGORIES ({{mealname}})
+      </p>
+    </div>
+  </div>
+  <div class="container" *ngIf="showcats">
+    <div class="row row-cols-3 row-cols-lg-3 row-cols-md-3 row-cols-sm-3">
+      <div class="col meal-category" *ngFor="let subcategory of subcats" (click)="cartservice.addToCart(subcategory)">
+        <div class="cat-bg">
+          <span class="cat-name">{{subcategory.name}}</span>
+          <p class="cat-price">{{subcategory.price}} $</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row order-row"   *ngIf="cart && cart.items && cart.items.length">
+    <div class="col bg-color1">
+      <p class="order-title">
+        ORDERS
+      </p>
+    </div>
+  </div>
+  <div class="table-responsive"  *ngIf="cart && cart.items && cart.items.length">
+  <table class="table table-borderless order-table">
+    <thead>
+      <tr>
+        <th scope="col" class="bg-head">
+          <p class="order-title1">item</p>
+        </th>
+        <th scope="col" class="bg-head">
+          <p class="order-title1">Quantity</p>
+        </th>
+        <th scope="col" class="bg-head">
+          <p class="order-title1">Cost</p>
+        </th>
+        <th scope="col" class="bg-head">
+          <p class="order-title1">Disc</p>
+        </th>
+        <th scope="col" class="bg-head">          
+          <p class="order-title1">Tax</p>
+        </th>
+        <th scope="col" class="bg-head">          
+          <p class="order-title1">Amount</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody class="order-items" *ngFor="let item of cart.items">
+      <tr>
+        <th scope="row" class="bg-content">
+          <p class="order-title2"(clikc)="cartservice.ShowMeal(meal)">
+            <!-- ({{mealname})  -->
+            ({{item.meal_id}}) 
+            <!-- {{cartservice.showmeal}} -->
+            {{item.name}}</p>
+        </th>
+        <td class="bg-content">
+          <p class="order-title2"> 
+            <span class="glyphicon glyphicon-minus minus" (click)="decreaseCount(item)">-</span>  
+            <span class="count"> {{item.quantity}} </span>
+            <span class="glyphicon glyphicon-plus plus" (click)="increaseCount(item)">+</span>
+          </p>
+        </td>
+        <td class="bg-content">
+          <p class="order-title2">$ {{(item.price * item.quantity)}}</p>
+        </td>
+        <td class="bg-content"> 
+          <p class="order-title2">{{item.disc}}</p>
+        </td>
+        <td class="bg-content">
+          <p class="order-title2"> $ {{item.tax}}</p>
+        </td>
+        <td class="bg-content">
+          <p class="order-title2" >$  {{(item.price * item.quantity) + item.tax}} </p>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+          <th scope="col" class="foot-bg">
+            <p class="order-title1"> _  </p>
+          </th>
+          <th scope="col" class="foot-bg">
+            <p class="order-title1">{{cartservice.getItemCount(item)}}</p>
+          </th>
+          <th scope="col" class="foot-bg">
+            <p class="order-title1">$ {{cartservice.getItemTotalPrice(item)}} </p>
+          </th>
+          <th scope="col" class="foot-bg">
+            <p class="order-title1"> {{cartservice.getDisc(item)}} </p>
+          </th>
+          <th scope="col" class="foot-bg">          
+            <p class="order-title1">$ {{cartservice.getTax(item)}}</p>
+          </th>
+          <th scope="col" class="foot-bg">          
+            <p class="order-title1">$ 
+              {{cartservice.getFinalTAmount(item)}}
+            </p>
+          </th>
+        </tr>
+    </tfoot>
+  </table>
+</div>
+  <div class="container" *ngIf="cart && cart.items && cart.items.length">
+    <div class="row row-cols-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-2">
+      <div class="col">
+        <p class="order-status">
+          Order Status: Pending
+        </p>
+      </div>
+      <div class="col btn-order">
+        <button  type="button" class="btn btn-light btn-lg btn-ord" (click)="cancelOrder()">Cancel Order</button> 
+        <button  type="button" class="btn btn-light btn-lg btn-ord" (click)="palceOrder()">Place Order</button> 
+      </div>
+    </div>
+  </div>  
+</div>
