@@ -1,16 +1,27 @@
-.overlay {
-    position:fixed;
-    display:block;
-    width:100%;
-    height:100%;
-    top:0;
-    left:0;
-    background-color:rgba(74,74,74,.8);
-    z-index:99999;
-  }
-  .spinner {
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform: translate(-50%,-50%);
-  }
+.loadWrapper {  
+  background: rgba(20, 47, 80, 0.46);;  
+  width: 100%;  
+  height: 100%;  
+  position: fixed;  
+  top:0px;  
+  left:0px;  
+  z-index: 99999;  
+}  
+.loader {
+  border: 5px solid #f3f3f3;  
+  border-top: 5px solid #3d3e3f;  
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  display: table;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

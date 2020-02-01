@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { LoaderService } from 'src/app/services/loader/loader.service';
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-loader',
@@ -8,14 +8,13 @@ import { Subject } from 'rxjs';
   styleUrls: ['./loader.component.css']
 })
 export class LoaderComponent implements OnInit {
-  color = 'primary';
-  mode = 'indeterminate';
-  value = 50;
-  isLoading: Subject<boolean> = this.loaderService.isLoading;
+  isLoading: boolean;
 
   constructor(private loaderService: LoaderService) { }
 
   ngOnInit() {
-  }
-
+    this.loaderService.status.subscribe((val: boolean) => {
+        this.isLoading = val;
+    });
+}
 }
