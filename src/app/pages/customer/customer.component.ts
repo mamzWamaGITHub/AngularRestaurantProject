@@ -15,16 +15,22 @@ export class CustomerComponent implements OnInit {
   cart: any  = [];
   showcats = false;
   showorders = false;
-  mealname: any = {};
+  showcart = true;
+  mealname: any = [];
   mealid: any = {};
   subcats: any = {};
   constructor(
     public cartservice: CartService,
     private localStorage: LocalStorageService,
     private router: Router,
-    public api: ApiService
+    public api: ApiService,
     ) {
-      this.api.getData('getitems').subscribe(data => {this.meals    = data.data;  console.log(data, 'LL'); });
+      this.api.getData('menus/1').subscribe(data => {this.meals    = data.data;  console.log(data, 'LL'); });
+
+      // this.meals.forEach((item, index) => {
+      //  this.mealname.push({mealname: item.DishName});
+      // });
+      // console.log(this.mealname , 'mealname');
    }
 
   ngOnInit() {
@@ -32,9 +38,10 @@ export class CustomerComponent implements OnInit {
   }
   showCats(meal) {
     this.showcats = true;
-    this.mealname = meal.name;
-    this.mealid = meal.id;
-    this.subcats =  meal.subcategories.map(elm => {
+    this.showcart = true;
+    this.mealname = meal.DishName;
+    this.mealid = meal.DishID;
+    this.subcats =  meal.DishCategories.map(elm => {
        return elm;
     });
   }

@@ -6,11 +6,9 @@ import { Injectable } from '@angular/core';
 })
 export class CartService {
   cart =   this.storage.get('cart') || {
-    items: [],
-    total: 0
-  };
-  showorders = false;
-  showmeal: any;
+      items: [],
+      total: 0,
+    };
   constructor(
     public storage: LocalStorageService
     ) { }
@@ -20,14 +18,14 @@ export class CartService {
    */
   calcTotalPrice(items) {
     return     this.cart.total = this.cart.items.reduce((acc, item) =>
-    acc + Number( Number(item.price)  *  Number(item.quantity)) + Number(item.tax), 0);
+    acc + Number( Number(item.Prize)  *  Number(item.Quanity)) + Number(item.Tax), 0);
   }
   public exist(item) {
-    return this.cart.items.filter(elm => elm.id === item.id);
+    return this.cart.items.filter(elm => elm.id === item.id).length;
   }
    cartChanged() {
     this.cart.items = this.cart.items.map(item => {
-      item.total = item.price * item.count;
+      item.total = item.Prize * item.Quanity;
       return item;
     });
     this.cart.total = this.calcTotalPrice(this.cart.items);
@@ -38,9 +36,9 @@ export class CartService {
       this.cart.items.push(item);
     } else {
       this.cart.items = this.cart.items.map(elm => {
-        elm.quantity = Number(elm.quantity);
+        elm.Quanity = Number(elm.Quanity);
         if (elm.id === item.id) {
-          elm.quantity =  elm.quantity + 1;
+          elm.Quanity =  elm.Quanity + 1;
         }
         return elm;
       });
@@ -49,7 +47,7 @@ export class CartService {
   decreaseCount(item) {
     this.cart.items = this.cart.items.map(elm => {
       if (elm.id === item.id) {
-          elm.quantity--;
+          elm.Quanity--;
       }
       return elm;
     });
@@ -63,33 +61,35 @@ export class CartService {
       total: 0
     };
   }
-ShowMeal(meal) {
-  this.showmeal = meal.name;
-  console.log(this.showmeal, 'm');
+showMeal(meal) {
+  this.cart.items.map(elm => {
+    this.cart.items.push(meal.DishName);
+    // console.log(elm);
+    // return elm;
+  });
 }
 addToCart(item) {
-  this.showorders =  true;
-  // if (!this.exist(item)) {
-  this.cart.items.push(item);
-  this.cart.total = this.calcTotalPrice(this.cart.items);
-  this.cartChanged();
-  // }
+  if (this.cart.items.indexOf(item) === -1) {
+    this.cart.items.push(item);
+    this.cart.total = this.calcTotalPrice(this.cart.items);
+    this.cart.items = this.showMeal(item);
+    this.cartChanged();
+  }
 }
 getCart() {
-  console.log(this.cart, );
   return this.cart;
 }
 getItemCount() {
-  return this.cart.items.reduce((acc, item) => acc + Number( Number(item.quantity)), 0);
+  return this.cart.items.reduce((acc, item) => acc + Number( Number(item.Quanity)), 0);
 }
 getItemTotalPrice() {
-  return this.cart.items.reduce((acc, item) => acc + Number( Number(item.price)) * Number(item.quantity), 0);
+  return this.cart.items.reduce((acc, item) => acc + Number( Number(item.Prize)) * Number(item.Quanity), 0);
 }
 getFinalTAmount() {
-  return this.cart.items.reduce((acc, item) => acc + Number( Number(item.price)  *  Number(item.quantity)) + Number(item.tax), 0);
+  return this.cart.items.reduce((acc, item) => acc + Number( Number(item.Prize)  *  Number(item.Quanity)) + Number(item.Tax), 0);
 }
 getTax() {
-  return this.cart.items.reduce((acc, item) => acc + Number( Number(item.tax)), 0);
+  return this.cart.items.reduce((acc, item) => acc + Number( Number(item.Tax)), 0);
 }
 getDisc() {
   return this.cart.items.reduce((acc, item) => acc + Number( Number(item.disc)), 0);

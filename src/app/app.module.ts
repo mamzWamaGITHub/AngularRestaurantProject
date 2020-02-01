@@ -1,3 +1,4 @@
+import { LoaderService } from './services/loader/loader.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -9,7 +10,8 @@ import { LocalStorageService } from './services/storage/storage.service';
 import { ApiService } from './services/api/api.service';
 import { CartService } from './services/cart/cart.service';
 import { LoaderComponent } from './pages/loader/loader.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+// import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,7 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   imports: [
     BrowserModule,
+    // MatProgressSpinnerModule,
     HttpClientModule,
     StorageServiceModule,
     AppRoutingModule,
@@ -26,7 +29,8 @@ import { HttpClientModule } from '@angular/common/http';
   providers: [
     LocalStorageService,
     ApiService,
-    CartService
+    CartService,
+    LoaderService
   ],
   bootstrap: [AppComponent]
 })
