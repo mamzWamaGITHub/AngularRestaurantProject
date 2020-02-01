@@ -9,6 +9,7 @@ export class CartService {
       items: [],
       total: 0,
     };
+    showorders: any = false;
   constructor(
     public storage: LocalStorageService
     ) { }
@@ -21,7 +22,7 @@ export class CartService {
     acc + Number( Number(item.Prize)  *  Number(item.Quanity)) + Number(item.Tax), 0);
   }
   public exist(item) {
-    return this.cart.items.filter(elm => elm.id === item.id).length;
+    return this.cart.items.filter(elm => elm.id !== item.id);
   }
    cartChanged() {
     this.cart.items = this.cart.items.map(item => {
@@ -55,8 +56,19 @@ export class CartService {
   find(item) {
     return this.cart.items.filter(i => i.id === item.id)[0];
   }
+  public deleteFromCart(item) {
+    if (!this.exist(item)) { return; }
+    item.isincart = false;
+    this.cart.items = this.cart.items.filter(elm => elm.id !== item.id);
+    this.cartChanged();
+    return this.cart;
+  }
   clear() {
-    this.cart = [];
+    this.showorders = false;
+    this.cart = {
+      items: [],
+      total: 0
+    };
     this.storage.remove('cart');
     this.cartChanged();
   }
@@ -68,6 +80,7 @@ showMeal(meal) {
   // });
 }
 addToCart(item) {
+  this.showorders = true;
   if (this.cart.items.indexOf(item) === -1) {
     this.cart.items.push(item);
     this.cart.total = this.calcTotalPrice(this.cart.items);

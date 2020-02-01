@@ -7,12 +7,6 @@
       <p class="title2">Table 4</p>
     </div>
   </div>
-
-  <!-- <div class="loadWrapper" *ngIf="showProgress">  
-    <div class="loader"></div>  
-  </div> -->
-
-
   <div class="row">
     <div class="col bg-color1">
       <p class="menu-title">
@@ -43,14 +37,14 @@
       </div>
     </div>
   </div>
-  <div class="row order-row"   *ngIf="cart && cart.items && cart.items.length">
+  <div class="row order-row"   *ngIf="cartservice.showorders">
     <div class="col bg-color1">
       <p class="order-title">
         ORDERS
       </p>
     </div>
   </div>
-  <div class="table-responsive"  *ngIf="cart && cart.items && cart.items.length">
+  <div class="table-responsive"  *ngIf="cartservice.showorders">
   <table class="table table-borderless order-table">
     <thead>
       <tr>
@@ -130,7 +124,7 @@
     </tfoot>
   </table>
 </div>
-  <div class="container" *ngIf="cart && cart.items && cart.items.length">
+  <div class="container" *ngIf="cartservice.showorders">
     <div class="row row-cols-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-2">
       <div class="col">
         <p class="order-status">
@@ -138,7 +132,13 @@
         </p>
       </div>
       <div class="col btn-order">
-        <button  type="button" class="btn btn-light btn-lg btn-ord" (click)="cancelOrder();">Cancel Order</button> 
+        <button  type="button" class="btn btn-light btn-lg btn-ord" 
+        mwlConfirmationPopover
+        [popoverTitle]="popoverTitle"
+        [popoverMessage]="popoverMessage"
+        placement="left"
+        (confirm)="cancelOrder()"
+        (cancel)="cancelClicked = true">Cancel Order</button> 
         <button  type="button" class="btn btn-light btn-lg btn-ord" (click)="palceOrder()">Place Order</button> 
       </div>
     </div>

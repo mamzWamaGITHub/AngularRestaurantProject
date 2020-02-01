@@ -16,11 +16,15 @@ export class CustomerComponent implements OnInit {
   meals: any = [];
   cart: any  = [];
   showcats = false;
-  showorders = false;
   showcart = true;
   mealname: any = [];
   mealid: any = {};
   subcats: any = {};
+  data:any = {
+    cart:{}
+  }
+  public popoverTitle: string = 'Cancel Order';
+  public popoverMessage: string = 'Are You Sure To Cancel Order';
   constructor(
     public cartservice: CartService,
     private localStorage: LocalStorageService,
@@ -40,10 +44,11 @@ export class CustomerComponent implements OnInit {
         (err: HttpErrorResponse) => {
         console.log("Error occured.")
      })) 
-   }
-
-  ngOnInit() {
-    this.cart = this.cartservice.getCart();
+     
+    }
+    
+    ngOnInit() {
+      this.cart = this.cartservice.getCart();
   }
   showCats(meal) {
     this.showcats = true;
@@ -61,11 +66,23 @@ export class CustomerComponent implements OnInit {
       this.cartservice.decreaseCount(item);
   }
   cancelOrder() {
-    this.cart = [];
     this.cartservice.clear();
-    this.localStorage.remove('cart');
+    this.router.navigate(['/'])
   }
   palceOrder() {
-    
+    this.data.cart = this.cart;
+    this.api.postData('buy', this.data)
+    .subscribe(data=> {
+      this.loaderService.display(false);
+      this.localStorage.set('orders', data.data);
+      console.log(data.data,'buycart')
+      this.loaderService.display(true);
+    },
+      (
+        (err: HttpErrorResponse) => {
+        console.log("Error occured.")
+    })
+    )
+
   }
 }

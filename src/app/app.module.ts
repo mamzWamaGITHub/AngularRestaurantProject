@@ -10,8 +10,8 @@ import { LocalStorageService } from './services/storage/storage.service';
 import { ApiService } from './services/api/api.service';
 import { CartService } from './services/cart/cart.service';
 import { LoaderComponent } from './pages/loader/loader.component';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-// import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { HttpClientModule } from '@angular/common/http';
+import { ConfirmationPopoverModule } from 'angular-confirmation-popover';
 
 @NgModule({
   declarations: [
@@ -21,10 +21,12 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
   ],
   imports: [
     BrowserModule,
-    // MatProgressSpinnerModule,
     HttpClientModule,
     StorageServiceModule,
     AppRoutingModule,
+    ConfirmationPopoverModule.forRoot({
+      confirmButtonType: 'danger' // set defaults here
+    })
   ],
   providers: [
     LocalStorageService,
