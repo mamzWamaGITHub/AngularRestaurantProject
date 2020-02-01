@@ -71,7 +71,7 @@
     <tbody class="order-items" *ngFor="let item of cart.items">
       <tr>
         <th scope="row" class="bg-content">
-          <p class="order-title2" *ngIf="showcart">
+          <p class="order-title2">
             <!-- ({{item.mealname}})  -->
             <!-- ({{item.DishName}})  -->
             <!-- {{mealname}} -->
@@ -132,7 +132,7 @@
         </p>
       </div>
       <div class="col btn-order">
-        <button  type="button" class="btn btn-light btn-lg btn-ord" (click)="cancelOrder()">Cancel Order</button> 
+        <button  type="button" class="btn btn-light btn-lg btn-ord" (click)="cancelOrder();">Cancel Order</button> 
         <button  type="button" class="btn btn-light btn-lg btn-ord" (click)="palceOrder()">Place Order</button> 
       </div>
     </div>

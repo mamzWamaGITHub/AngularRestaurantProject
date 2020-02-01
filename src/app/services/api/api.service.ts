@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { map, catchError, tap } from 'rxjs/operators';
+import { map, catchError, tap, startWith } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +25,15 @@ export class ApiService {
     }
     getData(endpoint: string, data: {} = {}): Observable<any> {
       const fullUrl: string = this.url + endpoint;
-      return this.http.get(fullUrl).pipe(
+      return  this.http.get(fullUrl).pipe(
+        map(this.Data)
+      );
+    }
+    postData(endpoint: string, data: {} = {}): Observable<any> {
+      const fullUrl: string = this.url + endpoint;
+      return this.http.post(fullUrl, {
+        data
+      }, this.httpOptions).pipe(
         map(this.Data),
       );
     }

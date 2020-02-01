@@ -25,7 +25,11 @@ export class CustomerComponent implements OnInit {
     private router: Router,
     public api: ApiService,
     ) {
-      this.api.getData('menus/1').subscribe(data => {this.meals = data;});
+      this.meals = this.localStorage.get('cacheMeals');
+      this.api.getData('menus/1').subscribe(data => {
+        this.meals = data;
+        this.localStorage.set('cacheMeals', this.meals);
+      });
    }
 
   ngOnInit() {

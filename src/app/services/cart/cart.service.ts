@@ -56,10 +56,9 @@ export class CartService {
     return this.cart.items.filter(i => i.id === item.id)[0];
   }
   clear() {
-    this.cart = {
-      items: [],
-      total: 0
-    };
+    this.cart = [];
+    this.storage.remove('cart');
+    this.cartChanged();
   }
 showMeal(meal) {
   // this.cart.items.map(elm => {
