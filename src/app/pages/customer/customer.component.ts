@@ -47,10 +47,11 @@ export class CustomerComponent implements OnInit {
       this.cartservice.decreaseCount(item);
   }
   cancelOrder() {
-    this.showorders = false;
+    this.cart = [];
     this.cartservice.clear();
     this.localStorage.remove('cart');
   }
   palceOrder() {
+    
   }
 }
