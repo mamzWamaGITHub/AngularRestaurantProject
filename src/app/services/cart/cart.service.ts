@@ -62,17 +62,17 @@ export class CartService {
     };
   }
 showMeal(meal) {
-  this.cart.items.map(elm => {
-    this.cart.items.push(meal.DishName);
+  // this.cart.items.map(elm => {
+  //   this.cart.items.push(meal.DishName);
     // console.log(elm);
     // return elm;
-  });
+  // });
 }
 addToCart(item) {
   if (this.cart.items.indexOf(item) === -1) {
     this.cart.items.push(item);
     this.cart.total = this.calcTotalPrice(this.cart.items);
-    this.cart.items = this.showMeal(item);
+    // this.cart.items = this.showMeal(item);
     this.cartChanged();
   }
 }
