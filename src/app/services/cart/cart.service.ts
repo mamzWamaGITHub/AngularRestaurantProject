@@ -8,21 +8,22 @@ export class CartService {
   cart =   this.storage.get('cart') || {
       items: [],
       total: 0,
+
     };
     showorders: any = false;
   constructor(
     public storage: LocalStorageService
     ) { }
   /**
-   * Calc items total price
-   * @param items [{price: any, count: any} ..]
+   * Calc items total Prize
+   * @param items [{Prize: any, Quanity: any} ..]
    */
   calcTotalPrice(items) {
     return     this.cart.total = this.cart.items.reduce((acc, item) =>
     acc + Number( Number(item.Prize)  *  Number(item.Quanity)) + Number(item.Tax), 0);
   }
   public exist(item) {
-    return this.cart.items.filter(elm => elm.id !== item.id);
+    return this.cart.items.filter(elm => elm.PlayerId === item.PlayerId).length;
   }
    cartChanged() {
     this.cart.items = this.cart.items.map(item => {
@@ -34,32 +35,35 @@ export class CartService {
   }
   increaseCount(item) {
     if (!this.exist(item)) {
+      item.Quanity = 1;
       this.cart.items.push(item);
     } else {
       this.cart.items = this.cart.items.map(elm => {
         elm.Quanity = Number(elm.Quanity);
-        if (elm.id === item.id) {
+        if (elm.PlayerId === item.PlayerId) {
           elm.Quanity =  elm.Quanity + 1;
         }
         return elm;
       });
     }
+    this.cartChanged();
   }
   decreaseCount(item) {
     this.cart.items = this.cart.items.map(elm => {
-      if (elm.id === item.id) {
+      if (elm.PlayerId === item.PlayerId) {
           elm.Quanity--;
       }
       return elm;
     });
+    this.cartChanged();
   }
   find(item) {
-    return this.cart.items.filter(i => i.id === item.id)[0];
+    return this.cart.items.filter(i => i.PlayerId === item.PlayerId)[0];
   }
   public deleteFromCart(item) {
     if (!this.exist(item)) { return; }
     item.isincart = false;
-    this.cart.items = this.cart.items.filter(elm => elm.id !== item.id);
+    this.cart.items = this.cart.items.filter(elm => elm.PlayerId !== item.PlayerId);
     this.cartChanged();
     return this.cart;
   }
@@ -81,7 +85,7 @@ showMeal(meal) {
 }
 addToCart(item) {
   this.showorders = true;
-  if (this.cart.items.indexOf(item) === -1) {
+  if (!this.exist(item))  {
     this.cart.items.push(item);
     this.cart.total = this.calcTotalPrice(this.cart.items);
     // this.cart.items = this.showMeal(item);

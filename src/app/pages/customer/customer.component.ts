@@ -23,6 +23,7 @@ export class CustomerComponent implements OnInit {
   data:any = {
     cart:{}
   }
+  order:any = {}
   public popoverTitle: string = 'Cancel Order';
   public popoverMessage: string = 'Are You Sure To Cancel Order';
   constructor(
@@ -44,7 +45,11 @@ export class CustomerComponent implements OnInit {
         (err: HttpErrorResponse) => {
         console.log("Error occured.")
      })) 
-     
+     this.order = {
+      customername:"One",
+      tableno:"4",
+      status:"Pending"
+     }
     }
     
     ngOnInit() {
@@ -83,6 +88,5 @@ export class CustomerComponent implements OnInit {
         console.log("Error occured.")
     })
     )
-
   }
 }

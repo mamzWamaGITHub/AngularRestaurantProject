@@ -1,10 +1,10 @@
 <div class="container wrapper">
   <div class="row">
     <div class="col bg-color">
-      <p class="title1">Customer One</p>
+      <p class="title1">Customer {{this.order.customername}}</p>
     </div>
     <div class="col bg-color">
-      <p class="title2">Table 4</p>
+      <p class="title2">Table {{this.order.tableno}}</p>
     </div>
   </div>
   <div class="row">
@@ -37,14 +37,14 @@
       </div>
     </div>
   </div>
-  <div class="row order-row"   *ngIf="cartservice.showorders">
+  <div class="row order-row"   *ngIf="cart && cart.items && cart.items.length">
     <div class="col bg-color1">
       <p class="order-title">
         ORDERS
       </p>
     </div>
   </div>
-  <div class="table-responsive"  *ngIf="cartservice.showorders">
+  <div class="table-responsive"  *ngIf="cart && cart.items && cart.items.length">
   <table class="table table-borderless order-table">
     <thead>
       <tr>
@@ -104,31 +104,31 @@
             <p class="order-title1"> _  </p>
           </th>
           <th scope="col" class="foot-bg">
-            <p class="order-title1">{{cartservice.getItemCount(item)}}</p>
+            <p class="order-title1">{{cartservice.getItemCount()}}</p>
           </th>
           <th scope="col" class="foot-bg">
-            <p class="order-title1">$ {{cartservice.getItemTotalPrice(item)}} </p>
+            <p class="order-title1">$ {{cartservice.getItemTotalPrice()}} </p>
           </th>
           <th scope="col" class="foot-bg">
-            <p class="order-title1"> {{cartservice.getDisc(item) || 0}} </p>
+            <p class="order-title1"> {{cartservice.getDisc() || 0}} </p>
           </th>
           <th scope="col" class="foot-bg">          
-            <p class="order-title1">$ {{cartservice.getTax(item)}}</p>
+            <p class="order-title1">$ {{cartservice.getTax()}}</p>
           </th>
           <th scope="col" class="foot-bg">          
             <p class="order-title1">$ 
-              {{cartservice.getFinalTAmount(item)}}
+              {{cartservice.getFinalTAmount()}}
             </p>
           </th>
         </tr>
     </tfoot>
   </table>
 </div>
-  <div class="container" *ngIf="cartservice.showorders">
+  <div class="container" *ngIf="cart && cart.items && cart.items.length">
     <div class="row row-cols-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-2">
       <div class="col">
         <p class="order-status">
-          Order Status: Pending
+          Order Status: {{this.order.status}}
         </p>
       </div>
       <div class="col btn-order">
