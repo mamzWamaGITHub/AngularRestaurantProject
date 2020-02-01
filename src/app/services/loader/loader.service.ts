@@ -9,7 +9,6 @@ export class LoaderService {
 
   constructor() { }
   display(value: boolean) {
-    console.log('LoaderService.display ' + value);
     this.status.next(value);
 }
 }

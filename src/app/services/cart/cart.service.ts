@@ -8,18 +8,17 @@ export class CartService {
   cart =   this.storage.get('cart') || {
       items: [],
       total: 0,
-
+      dishname: '',
     };
-    showorders: any = false;
   constructor(
     public storage: LocalStorageService
     ) { }
   /**
    * Calc items total Prize
-   * @param items [{Prize: any, Quanity: any} ..]
+   * @param items [{Prize: any, Quanity: any } ..]
    */
   calcTotalPrice(items) {
-    return     this.cart.total = this.cart.items.reduce((acc, item) =>
+    return   this.cart.items.reduce((acc, item) =>
     acc + Number( Number(item.Prize)  *  Number(item.Quanity)) + Number(item.Tax), 0);
   }
   public exist(item) {
@@ -31,6 +30,7 @@ export class CartService {
       return item;
     });
     this.cart.total = this.calcTotalPrice(this.cart.items);
+    // this.cart.dishname = this.addMeal(this.cart.items);
     this.storage.set('cart', this.cart);
   }
   increaseCount(item) {
@@ -68,7 +68,6 @@ export class CartService {
     return this.cart;
   }
   clear() {
-    this.showorders = false;
     this.cart = {
       items: [],
       total: 0
@@ -76,19 +75,17 @@ export class CartService {
     this.storage.remove('cart');
     this.cartChanged();
   }
-showMeal(meal) {
+addMeal(item) {
+  // this.cart.dishname = item.DishName;
   // this.cart.items.map(elm => {
-  //   this.cart.items.push(meal.DishName);
-    // console.log(elm);
-    // return elm;
+  //   elm = this.cart.items.push(item.DishName);
+  //   console.log(elm, 'this.cart.dishname');
+  //   return elm;
   // });
 }
 addToCart(item) {
-  this.showorders = true;
   if (!this.exist(item))  {
     this.cart.items.push(item);
-    this.cart.total = this.calcTotalPrice(this.cart.items);
-    // this.cart.items = this.showMeal(item);
     this.cartChanged();
   }
 }

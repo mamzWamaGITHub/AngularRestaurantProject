@@ -15,7 +15,7 @@
     </div>
   </div>
   <div class="row  row-cols-lg-6 row-cols-sm-2 row-cols-md-5">
-    <div class="col meal-col"  *ngFor="let meal of meals" (click)="showCats(meal);cartservice.showMeal(meal)">
+    <div class="col meal-col"  *ngFor="let meal of meals" (click)="showCats(meal);cartservice.addMeal(meal)">
       <img width="100" height="80" src="{{meal.image ||'assets/dummy/images/bri.jpg'}}">
       <p class="meal-name">{{meal.DishName}}</p>
     </div>

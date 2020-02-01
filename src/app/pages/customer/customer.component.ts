@@ -43,6 +43,7 @@ export class CustomerComponent implements OnInit {
       },
       (
         (err: HttpErrorResponse) => {
+        this.loaderService.display(false);
         console.log("Error occured.")
      })) 
      this.order = {
@@ -78,14 +79,17 @@ export class CustomerComponent implements OnInit {
     this.data.cart = this.cart;
     this.api.postData('buy', this.data)
     .subscribe(data=> {
-      this.loaderService.display(false);
+      this.loaderService.display(true);
       this.localStorage.set('orders', data.data);
       console.log(data.data,'buycart')
-      this.loaderService.display(true);
+      this.loaderService.display(false);
+      this.cartservice.clear();
+      this.router.navigate(['/']);
     },
       (
         (err: HttpErrorResponse) => {
-        console.log("Error occured.")
+          this.loaderService.display(false);
+          console.log("Error occured.")
     })
     )
   }
