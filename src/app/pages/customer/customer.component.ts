@@ -25,7 +25,7 @@ export class CustomerComponent implements OnInit {
     private router: Router,
     public api: ApiService,
     ) {
-      this.api.getData('menus/1').subscribe(data => {this.meals    = data.data;  console.log(data, 'LL'); });
+      this.api.getData('menus/1').subscribe(data => {this.meals = data ;  console.log(data, 'LL'); });
 
       // this.meals.forEach((item, index) => {
       //  this.mealname.push({mealname: item.DishName});
