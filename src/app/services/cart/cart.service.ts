@@ -30,7 +30,6 @@ export class CartService {
       return item;
     });
     this.cart.total = this.calcTotalPrice(this.cart.items);
-    // this.cart.dishname = this.addMeal(this.cart.items);
     this.storage.set('cart', this.cart);
   }
   increaseCount(item) {
