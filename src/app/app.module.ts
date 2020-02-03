@@ -10,14 +10,18 @@ import { LocalStorageService } from './services/storage/storage.service';
 import { ApiService } from './services/api/api.service';
 import { CartService } from './services/cart/cart.service';
 import { LoaderComponent } from './pages/loader/loader.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ConfirmationPopoverModule } from 'angular-confirmation-popover';
-
+import { AlertComponent } from './pages/alert/alert.component';
+import { AlertService } from './services/alert/alert.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CustomMaterialModule } from './pages/custom-material/custom-material.module';
 @NgModule({
   declarations: [
     AppComponent,
     CustomerComponent,
     LoaderComponent,
+    AlertComponent,
   ],
   imports: [
     BrowserModule,
@@ -26,14 +30,18 @@ import { ConfirmationPopoverModule } from 'angular-confirmation-popover';
     AppRoutingModule,
     ConfirmationPopoverModule.forRoot({
       confirmButtonType: 'danger' // set defaults here
-    })
+    }),
+    CustomMaterialModule,
+    BrowserAnimationsModule,
   ],
   providers: [
     LocalStorageService,
     ApiService,
     CartService,
-    LoaderService
+    LoaderService,
+    AlertService
   ],
-  bootstrap: [AppComponent]
+  entryComponents: [AlertComponent],
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

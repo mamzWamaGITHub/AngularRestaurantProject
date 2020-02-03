@@ -6,30 +6,40 @@ import { Injectable } from '@angular/core';
 })
 export class CartService {
   cart =   this.storage.get('cart') || {
-      items: [],
-      total: 0,
-      dishname: '',
-    };
+      items: [
+        // {
+        //   DishID: '',
+        //   CompanyID: '',
+        //   DishCategories: [
+        //     {
+        //       CategoryId: ''
+        //     }
+        //   ]
+        // }
+      ],
+      Amount: 0,
+};
   constructor(
     public storage: LocalStorageService
     ) { }
   /**
-   * Calc items total Prize
+   * Calc items Amount Prize
    * @param items [{Prize: any, Quanity: any } ..]
    */
-  calcTotalPrice(items) {
+  calcTotalAmount(items) {
     return   this.cart.items.reduce((acc, item) =>
     acc + Number( Number(item.Prize)  *  Number(item.Quanity)) + Number(item.Tax), 0);
   }
   public exist(item) {
-    return this.cart.items.filter(elm => elm.PlayerId === item.PlayerId).length;
+    return this.cart.items.filter(elm => elm.CategoryId === item.CategoryId).length;
   }
    cartChanged() {
     this.cart.items = this.cart.items.map(item => {
-      item.total = item.Prize * item.Quanity;
+      item.Amount = item.Prize * item.Quanity;
       return item;
     });
-    this.cart.total = this.calcTotalPrice(this.cart.items);
+    this.cart.Amount = this.calcTotalAmount(this.cart.items);
+    this.cart.Quanity = this.getItemCount();
     this.storage.set('cart', this.cart);
   }
   increaseCount(item) {
@@ -39,7 +49,7 @@ export class CartService {
     } else {
       this.cart.items = this.cart.items.map(elm => {
         elm.Quanity = Number(elm.Quanity);
-        if (elm.PlayerId === item.PlayerId) {
+        if (elm.CategoryId === item.CategoryId) {
           elm.Quanity =  elm.Quanity + 1;
         }
         return elm;
@@ -49,7 +59,7 @@ export class CartService {
   }
   decreaseCount(item) {
     this.cart.items = this.cart.items.map(elm => {
-      if (elm.PlayerId === item.PlayerId) {
+      if (elm.CategoryId === item.CategoryId) {
           elm.Quanity--;
       }
       return elm;
@@ -57,36 +67,30 @@ export class CartService {
     this.cartChanged();
   }
   find(item) {
-    return this.cart.items.filter(i => i.PlayerId === item.PlayerId)[0];
+    return this.cart.items.filter(i => i.CategoryId === item.CategoryId)[0];
   }
   public deleteFromCart(item) {
     if (!this.exist(item)) { return; }
     item.isincart = false;
-    this.cart.items = this.cart.items.filter(elm => elm.PlayerId !== item.PlayerId);
+    this.cart.items = this.cart.items.filter(elm => elm.CategoryId !== item.CategoryId);
     this.cartChanged();
     return this.cart;
   }
   clear() {
     this.cart = {
       items: [],
-      total: 0
+      Amount: 0
     };
     this.storage.remove('cart');
     this.cartChanged();
   }
-addMeal(item) {
-  // this.cart.dishname = item.DishName;
-  // this.cart.items.map(elm => {
-  //   elm = this.cart.items.push(item.DishName);
-  //   console.log(elm, 'this.cart.dishname');
-  //   return elm;
-  // });
-}
 addToCart(item) {
-  if (!this.exist(item))  {
-    this.cart.items.push(item);
-    this.cartChanged();
-  }
+  // if (!this.exist(item))  {
+  //   this.cart.items.push(item);
+  //   this.cartChanged();
+  // }
+  // this.cart.items.push({item});
+  console.log(item);
 }
 getCart() {
   return this.cart;

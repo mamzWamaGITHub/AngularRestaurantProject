@@ -27,6 +27,8 @@ export class ApiService {
       const fullUrl: string = this.url + endpoint;
       return  this.http.get(fullUrl).pipe(
         map(this.Data)
+      ).pipe(
+        catchError(this.handleError)
       );
     }
     postData(endpoint: string, data: {} = {}): Observable<any> {
@@ -34,7 +36,16 @@ export class ApiService {
       return this.http.post(fullUrl, {
         data
       }, this.httpOptions).pipe(
-        map(this.Data),
-      );
+        map(this.Data)
+        ).pipe(
+          catchError(this.handleError)
+        );
+    }
+    public handleError(error: any) {
+      const errMsg = (error.message) ? error.message :
+        error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+      console.error(errMsg);
+      console.log('Server Error!');
+      return Observable.throw(errMsg);
     }
 }

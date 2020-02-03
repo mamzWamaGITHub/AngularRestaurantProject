@@ -1,25 +1,40 @@
 <div class="container wrapper">
+  <div class="row top">
+    <div class="col bg-top-color" (click)="showTable()">
+      <p class="title-top1">Tables</p>
+    </div>
+    <div class="col bg-top-color">
+      <p class="title-top2">New Customer</p>
+    </div>
+  </div> 
+  <div *ngIf="showtable" class="row row-cols-4 row-cols-lg-4 row-cols-md-4 row-cols-sm-3 table-wapper">
+    <div class="col meal-category" *ngFor="let table of tables" (click)="selectDish(table);">
+      <div class="tab-bg">
+        <span class="tab-name">{{table.TableName}}</span>
+      </div>
+    </div>
+  </div>
   <div class="row">
     <div class="col bg-color">
       <p class="title1">Customer {{this.order.customername}}</p>
     </div>
     <div class="col bg-color">
-      <p class="title2">Table {{this.order.tableno}}</p>
+      <p class="title2">{{tablename}} </p>
     </div>
   </div>
-  <div class="row">
+  <div class="row" *ngIf="showdish">
     <div class="col bg-color1">
       <p class="menu-title">
         MENU/DISHES
       </p>
     </div>
   </div>
-  <div class="row  row-cols-lg-6 row-cols-sm-2 row-cols-md-5">
-    <div class="col meal-col"  *ngFor="let meal of meals" (click)="showCats(meal);cartservice.addMeal(meal)">
+  <div class="row  row-cols-lg-6 row-cols-sm-2 row-cols-md-5"  *ngIf="showdish">
+    <div class="col meal-col"  *ngFor="let meal of meals" (click)="showCats(meal);">
       <img width="100" height="80" src="{{meal.image ||'assets/dummy/images/bri.jpg'}}">
       <p class="meal-name">{{meal.DishName}}</p>
-    </div>
   </div>
+</div>
   <div class="row" *ngIf="showcats">
     <div class="col bg-color1">
       <p class="menu-title">
@@ -31,7 +46,7 @@
     <div class="row row-cols-3 row-cols-lg-3 row-cols-md-3 row-cols-sm-3">
       <div class="col meal-category" *ngFor="let subcategory of subcats">
         <div class="cat-bg"  (click)="cartservice.addToCart(subcategory);">
-          <span class="cat-name">{{subcategory.PlayerName}}</span>
+          <span class="cat-name">{{subcategory.CategoryName}}</span>
           <p class="cat-price">{{subcategory.Prize}} $</p>
         </div>
       </div>
@@ -72,10 +87,10 @@
       <tr>
         <th scope="row" class="bg-content">
           <p class="order-title2">
-            <!-- ({{item.mealname}})  -->
-            <!-- ({{item.DishName}})  -->
+          <!-- ({{item.mealname}})   -->
+            <!-- ({{item.DishName}})   -->
             <!-- {{mealname}} -->
-            {{item.PlayerName}}</p>
+            {{item.CategoryName}}</p>
         </th>
         <td class="bg-content">
           <p class="order-title2"> 

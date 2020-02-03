@@ -3,9 +3,10 @@ import { CartService } from 'src/app/services/cart/cart.service';
 import { ApiService } from 'src/app/services/api/api.service';
 import { LocalStorageService } from 'src/app/services/storage/storage.service';
 import { Router } from '@angular/router';
-import { LoaderComponent } from '../loader/loader.component';
-import { HttpErrorResponse } from '@angular/common/http';
 import { LoaderService } from 'src/app/services/loader/loader.service';
+import { AlertService } from 'src/app/services/alert/alert.service';
+import { MatDialog } from '@angular/material';
+import { ConfirmDialogModel, AlertComponent } from '../alert/alert.component';
 
 @Component({
   selector: 'app-customer',
@@ -14,28 +15,32 @@ import { LoaderService } from 'src/app/services/loader/loader.service';
 })
 export class CustomerComponent implements OnInit {
   meals: any = [];
+  tables: any = [];
   cart: any  = [];
   showcats = false;
-  showcart = true;
-  mealname: any = [];
+  showtable = true;
+  showdish = false;
+  mealname: any = {};
+  tablename: any;
   mealid: any = {};
   subcats: any = {};
   data: any = {
-    cart: {}
   };
   order: any = {
     customername: 'One',
-    tableno:  '4',
     status: 'Pending'
   };
+  result = '';
   public popoverTitle = 'Cancel Order';
   public popoverMessage = 'Are You Sure To Cancel Order';
   constructor(
-    public cartservice: CartService,
+    private cartservice: CartService,
     private localStorage: LocalStorageService,
     private router: Router,
     private loaderService: LoaderService,
-    public api: ApiService,
+    private api: ApiService,
+    public dialog: MatDialog,
+    private alertservice: AlertService,
     ) {
       this.loaderService.display(true);
       this.meals = this.localStorage.get('cacheMeals');
@@ -46,7 +51,20 @@ export class CustomerComponent implements OnInit {
         this.localStorage.set('cacheMeals', this.meals);
       },
       (
-        (err: HttpErrorResponse) => {
+        error  => {
+        this.loaderService.display(false);
+        console.log('Error occured.');
+     }));
+      this.loaderService.display(true);
+      this.tables = this.localStorage.get('tables');
+      this.api.getData('tables/1').subscribe(data => {
+        this.loaderService.display(true);
+        this.tables = data;
+        this.loaderService.display(false);
+        this.localStorage.set('tables', this.tables);
+      },
+      (
+        error => {
         this.loaderService.display(false);
         console.log('Error occured.');
      }));
@@ -56,7 +74,6 @@ export class CustomerComponent implements OnInit {
   }
   showCats(meal) {
     this.showcats = true;
-    this.showcart = true;
     this.mealname = meal.DishName;
     this.mealid = meal.DishID;
     this.subcats =  meal.DishCategories.map(elm => {
@@ -73,22 +90,42 @@ export class CustomerComponent implements OnInit {
     this.cartservice.clear();
     this.router.navigate(['/']);
   }
-  palceOrder() {
-    this.data.cart = this.cart;
-    this.api.postData('buy', this.data)
-    .subscribe(data => {
-      this.loaderService.display(true);
-      this.localStorage.set('orders', data.data);
-      console.log(data.data, 'buycart');
-      this.loaderService.display(false);
-      this.cartservice.clear();
-      this.router.navigate(['/']);
-    },
-      (
-        (err: HttpErrorResponse) => {
-          this.loaderService.display(false);
-          console.log('Error occured.');
-    })
-    );
+  palceOrder(): void {
+      // const message = `Are you sure you want to do this?`;
+      // const dialogData = new ConfirmDialogModel('Place Order', message);
+      // const dialogRef = this.dialog.open(AlertComponent, {
+      //   maxWidth: '400px',
+      //   data: dialogData
+      // });
+      this.data.Amount = this.cart.Amount;
+      this.data.Quanity = this.cart.Quanity;
+      // this.data.TableID  = this.cart.items.map(elm => elm.CategoryId);
+      // this.data.CompanyID = this.cart.items.map(elm => elm.CategoryId);
+      // this.data.MenuRID = this.cart.items.map(elm => elm.DishID);
+      // this.data.CategoryID = this.cart.items.map(elm => elm.CategoryId);
+      this.api.postData('Menus/1/1/1/1/1/5', this.data)
+      .subscribe(
+        data => {
+        this.loaderService.display(true);
+        this.localStorage.set('orders', data.data);
+        console.log(data.data, 'buycart');
+        this.loaderService.display(false);
+        this.cartservice.clear();
+        this.router.navigate(['/']);
+      },
+        (
+          error => {
+            this.loaderService.display(false);
+            console.log('Error occured.');
+      })
+      );
+  }
+  showTable() {
+    this.showtable = !this.showtable;
+  }
+  selectDish(table) {
+    this.showdish = true;
+    this.showtable = false;
+    this.tablename = table.TableName;
   }
 }
