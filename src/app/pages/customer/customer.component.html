@@ -44,8 +44,8 @@
   </div>
   <div class="container" *ngIf="showcats">
     <div class="row row-cols-3 row-cols-lg-3 row-cols-md-3 row-cols-sm-3">
-      <div class="col meal-category" *ngFor="let subcategory of subcats" (click)="cartservice.getCatId(subcategory);cartservice.addToCart(subcategory);">
-        <div class="cat-bg">
+      <div class="col meal-category" *ngFor="let subcategory of subcats">
+        <div class="cat-bg" (click)="cartservice.addToCart(subcategory)">
           <span class="cat-name">{{subcategory.CategoryName}}</span>
           <p class="cat-price">{{subcategory.Prize}} $</p>
         </div>
@@ -87,7 +87,7 @@
       <tr>
         <th scope="row" class="bg-content">
           <p class="order-title2">
-            ({{this.cart.mealname}})
+            <!-- ({{this.cart.DishName}}) -->
             {{item.CategoryName}}</p>
         </th>
         <td class="bg-content">
@@ -153,6 +153,8 @@
         (confirm)="cancelOrder()"
         (cancel)="cancelClicked = true">Cancel Order</button> 
         <button  type="button" class="btn btn-light btn-lg btn-ord" (click)="palceOrder()">Place Order</button> 
+        <div class="error">{{ error }}</div>
+
       </div>
     </div>
   </div>  

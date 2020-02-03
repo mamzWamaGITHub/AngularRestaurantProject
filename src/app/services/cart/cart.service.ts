@@ -31,10 +31,7 @@ export class CartService {
   }
   getMealId(item) {
     this.cart.MenuRID = item.DishID;
-    this.cart.mealname = item.DishName;
-  }
-  getCatId(item) {
-    this.cart.CategoryRID = item.CategoryId;
+    this.cart.DishName = item.DishName;
   }
   public exist(item) {
     return this.cart.items.filter(elm => elm.CategoryId === item.CategoryId).length;
@@ -92,10 +89,10 @@ export class CartService {
   }
 addToCart(item) {
   if (!this.exist(item))  {
+    this.cart.CategoryRID = item.CategoryId;
     this.cart.items.push(item);
     this.cartChanged();
   }
-  console.log(this.cart.items);
 }
 getCart() {
   return this.cart;

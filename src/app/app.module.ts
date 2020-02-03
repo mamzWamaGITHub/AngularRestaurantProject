@@ -39,7 +39,7 @@ import { CustomMaterialModule } from './pages/custom-material/custom-material.mo
     ApiService,
     CartService,
     LoaderService,
-    AlertService
+    AlertService,
   ],
   entryComponents: [AlertComponent],
   bootstrap: [AppComponent],

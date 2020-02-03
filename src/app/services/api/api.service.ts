@@ -27,8 +27,6 @@ export class ApiService {
       const fullUrl: string = this.url + endpoint;
       return  this.http.get(fullUrl).pipe(
         map(this.Data)
-      ).pipe(
-        catchError(this.handleError)
       );
     }
     postData(endpoint: string, data: {} = {}): Observable<any> {
@@ -37,8 +35,6 @@ export class ApiService {
         data
       }, this.httpOptions).pipe(
         map(this.Data)
-        ).pipe(
-          catchError(this.handleError)
         );
     }
     public handleError(error: any) {
