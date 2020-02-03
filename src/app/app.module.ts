@@ -16,6 +16,7 @@ import { AlertComponent } from './pages/alert/alert.component';
 import { AlertService } from './services/alert/alert.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CustomMaterialModule } from './pages/custom-material/custom-material.module';
+
 @NgModule({
   declarations: [
     AppComponent,

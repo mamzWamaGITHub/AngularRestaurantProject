@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { LoaderService } from 'src/app/services/loader/loader.service';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { ConfirmDialogModel, AlertComponent } from '../alert/alert.component';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-customer',
@@ -47,6 +48,8 @@ export class CustomerComponent implements OnInit {
       this.loaderService.display(true);
       this.meals = this.localStorage.get('cacheMeals');
       this.api.getData('menus/1').subscribe(data => {
+        console.log('success', '1');
+        swal('Loading Finished');
         this.loaderService.display(true);
         this.meals = data;
         this.loaderService.display(false);
@@ -54,6 +57,7 @@ export class CustomerComponent implements OnInit {
       },
       (
         error  => {
+        swal('Oops!', 'Something went wrong!', 'error');
         this.loaderService.display(false);
         console.log('Error occured.');
         this.error = error;
@@ -61,6 +65,7 @@ export class CustomerComponent implements OnInit {
       this.loaderService.display(true);
       this.tables = this.localStorage.get('tables');
       this.api.getData('tables/1').subscribe(data => {
+        console.log('success', '1');
         this.loaderService.display(true);
         this.tables = data;
         this.loaderService.display(false);
@@ -115,16 +120,18 @@ export class CustomerComponent implements OnInit {
           this.api.postData('Cart', this.order)
           .subscribe(
             data => {
-            this.loaderService.display(true);
+            console.log('buy', '1');
             this.localStorage.set('orders', data.order);
             console.log(data.order, 'buycart');
             this.loaderService.display(false);
+            swal('Data Inserted Sucfully');
             this.cartservice.clear();
             this.router.navigate(['/']);
           },
             (
               error => {
                 this.loaderService.display(false);
+                swal('Oops!', 'Something went wrong!', 'error');
                 console.log('Error occured.');
                 this.error = error;
           })
