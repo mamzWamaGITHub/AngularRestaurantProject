@@ -6,17 +6,11 @@ import { Injectable } from '@angular/core';
 })
 export class CartService {
   cart =   this.storage.get('cart') || {
-      items: [
-        // {
-        //   DishID: '',
-        //   CompanyID: '',
-        //   DishCategories: [
-        //     {
-        //       CategoryId: ''
-        //     }
-        //   ]
-        // }
-      ],
+      items: [],
+      TableID : '',
+      CompanyID: '',
+      MenuRID: '',
+      CategoryID: '',
       Amount: 0,
 };
   constructor(
@@ -85,12 +79,23 @@ export class CartService {
     this.cartChanged();
   }
 addToCart(item) {
-  // if (!this.exist(item))  {
-  //   this.cart.items.push(item);
-  //   this.cartChanged();
-  // }
-  // this.cart.items.push({item});
-  console.log(item);
+  if (!this.exist(item))  {
+    this.cart.items.push(item);
+    this.cartChanged();
+  }
+  // this.cart.TableID = item.RID;
+  // this.cart.CompanyID = item.CompanyID;
+  // this.cart.MenuRID = item.DishID;
+  // this.cart.CategoryID = item.CategoryId;
+  // this.cart.items.push(
+  //   {
+  //   TableID: item.TableID,
+  //   CompanyID: item.CompanyID,
+  //   MenuRID: item.MenuRID,
+  //   CategoryID: item.CategoryID
+  //   }
+    // );
+  // this.cartChanged();
 }
 getCart() {
   return this.cart;

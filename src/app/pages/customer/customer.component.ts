@@ -25,10 +25,11 @@ export class CustomerComponent implements OnInit {
   mealid: any = {};
   subcats: any = {};
   data: any = {
-  };
-  order: any = {
     customername: 'One',
     status: 'Pending'
+  };
+  order: any = {
+
   };
   result = '';
   public popoverTitle = 'Cancel Order';
@@ -97,18 +98,18 @@ export class CustomerComponent implements OnInit {
       //   maxWidth: '400px',
       //   data: dialogData
       // });
-      this.data.Amount = this.cart.Amount;
-      this.data.Quanity = this.cart.Quanity;
-      // this.data.TableID  = this.cart.items.map(elm => elm.CategoryId);
-      // this.data.CompanyID = this.cart.items.map(elm => elm.CategoryId);
-      // this.data.MenuRID = this.cart.items.map(elm => elm.DishID);
-      // this.data.CategoryID = this.cart.items.map(elm => elm.CategoryId);
-      this.api.postData('Menus/1/1/1/1/1/5', this.data)
+      this.order.TableID  = this.cart.TableID;
+      this.order.CompanyID = this.cart.CompanyID;
+      this.order.MenuRID = this.cart.MenuRID;
+      this.order.CategoryID = this.cart.CategoryID;
+      this.order.Quanity = this.cart.Quanity;
+      this.order.Amount = this.cart.Amount;
+      this.api.postData('Menus/1/1/1/1/1/5', this.order)
       .subscribe(
-        data => {
+        order => {
         this.loaderService.display(true);
-        this.localStorage.set('orders', data.data);
-        console.log(data.data, 'buycart');
+        this.localStorage.set('orders', order.order);
+        console.log(order.order, 'buycart');
         this.loaderService.display(false);
         this.cartservice.clear();
         this.router.navigate(['/']);

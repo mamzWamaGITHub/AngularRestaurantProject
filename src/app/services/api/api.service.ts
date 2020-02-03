@@ -31,10 +31,10 @@ export class ApiService {
         catchError(this.handleError)
       );
     }
-    postData(endpoint: string, data: {} = {}): Observable<any> {
+    postData(endpoint: string, order: {} = {}): Observable<any> {
       const fullUrl: string = this.url + endpoint;
       return this.http.post(fullUrl, {
-        data
+        order
       }, this.httpOptions).pipe(
         map(this.Data)
         ).pipe(
