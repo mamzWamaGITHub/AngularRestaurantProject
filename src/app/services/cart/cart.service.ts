@@ -6,11 +6,12 @@ import { Injectable } from '@angular/core';
 })
 export class CartService {
   cart =   this.storage.get('cart') || {
-      items: [],
-      TableID : '',
+      items: [
+      ],
+      TableRID : '',
       CompanyID: '',
       MenuRID: '',
-      CategoryID: '',
+      CategoryRID: '',
       Amount: 0,
 };
   constructor(
@@ -23,6 +24,17 @@ export class CartService {
   calcTotalAmount(items) {
     return   this.cart.items.reduce((acc, item) =>
     acc + Number( Number(item.Prize)  *  Number(item.Quanity)) + Number(item.Tax), 0);
+  }
+  getTableId(item) {
+    this.cart.TableRID = item.RID;
+    this.cart.CompanyID = item.CompanyID;
+  }
+  getMealId(item) {
+    this.cart.MenuRID = item.DishID;
+    this.cart.mealname = item.DishName;
+  }
+  getCatId(item) {
+    this.cart.CategoryRID = item.CategoryId;
   }
   public exist(item) {
     return this.cart.items.filter(elm => elm.CategoryId === item.CategoryId).length;
@@ -83,19 +95,7 @@ addToCart(item) {
     this.cart.items.push(item);
     this.cartChanged();
   }
-  // this.cart.TableID = item.RID;
-  // this.cart.CompanyID = item.CompanyID;
-  // this.cart.MenuRID = item.DishID;
-  // this.cart.CategoryID = item.CategoryId;
-  // this.cart.items.push(
-  //   {
-  //   TableID: item.TableID,
-  //   CompanyID: item.CompanyID,
-  //   MenuRID: item.MenuRID,
-  //   CategoryID: item.CategoryID
-  //   }
-    // );
-  // this.cartChanged();
+  console.log(this.cart.items);
 }
 getCart() {
   return this.cart;

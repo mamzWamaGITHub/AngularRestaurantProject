@@ -31,7 +31,6 @@ export class CustomerComponent implements OnInit {
   order: any = {
 
   };
-  result = '';
   public popoverTitle = 'Cancel Order';
   public popoverMessage = 'Are You Sure To Cancel Order';
   constructor(
@@ -98,18 +97,18 @@ export class CustomerComponent implements OnInit {
       //   maxWidth: '400px',
       //   data: dialogData
       // });
-      this.order.TableID  = this.cart.TableID;
+      this.order.TableRID  = this.cart.TableRID;
       this.order.CompanyID = this.cart.CompanyID;
       this.order.MenuRID = this.cart.MenuRID;
-      this.order.CategoryID = this.cart.CategoryID;
+      this.order.CategoryRID = this.cart.CategoryRID;
       this.order.Quanity = this.cart.Quanity;
       this.order.Amount = this.cart.Amount;
-      this.api.postData('Menus/1/1/1/1/1/5', this.order)
+      this.api.postData('Cart', this.order)
       .subscribe(
-        order => {
+        data => {
         this.loaderService.display(true);
-        this.localStorage.set('orders', order.order);
-        console.log(order.order, 'buycart');
+        this.localStorage.set('orders', data.order);
+        console.log(data.order, 'buycart');
         this.loaderService.display(false);
         this.cartservice.clear();
         this.router.navigate(['/']);

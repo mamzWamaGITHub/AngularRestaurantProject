@@ -22,7 +22,6 @@
 .table-wapper {
     height: 240px;
     background: #7161d1;
-    overflow-y:auto
 }
 .tab-bg {
     background-color: #c4c4c4;
@@ -32,7 +31,6 @@
     display: table;
     margin: 0 auto;
     margin-top: 15px;
-    padding: 10px;
     border: 2px solid #c4c4c4;
 }
 .tab-name {

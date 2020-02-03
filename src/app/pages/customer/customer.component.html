@@ -8,7 +8,7 @@
     </div>
   </div> 
   <div *ngIf="showtable" class="row row-cols-4 row-cols-lg-4 row-cols-md-4 row-cols-sm-3 table-wapper">
-    <div class="col meal-category" *ngFor="let table of tables" (click)="selectDish(table);">
+    <div class="col meal-category" *ngFor="let table of tables" (click)="selectDish(table);cartservice.getTableId(table)">
       <div class="tab-bg">
         <span class="tab-name">{{table.TableName}}</span>
       </div>
@@ -30,7 +30,7 @@
     </div>
   </div>
   <div class="row  row-cols-lg-6 row-cols-sm-2 row-cols-md-5"  *ngIf="showdish">
-    <div class="col meal-col"  *ngFor="let meal of meals" (click)="showCats(meal);">
+    <div class="col meal-col"  *ngFor="let meal of meals" (click)="showCats(meal);cartservice.getMealId(meal)">
       <img width="100" height="80" src="{{meal.image ||'assets/dummy/images/bri.jpg'}}">
       <p class="meal-name">{{meal.DishName}}</p>
   </div>
@@ -44,8 +44,8 @@
   </div>
   <div class="container" *ngIf="showcats">
     <div class="row row-cols-3 row-cols-lg-3 row-cols-md-3 row-cols-sm-3">
-      <div class="col meal-category" *ngFor="let subcategory of subcats">
-        <div class="cat-bg"  (click)="cartservice.addToCart(subcategory);">
+      <div class="col meal-category" *ngFor="let subcategory of subcats" (click)="cartservice.getCatId(subcategory);cartservice.addToCart(subcategory);">
+        <div class="cat-bg">
           <span class="cat-name">{{subcategory.CategoryName}}</span>
           <p class="cat-price">{{subcategory.Prize}} $</p>
         </div>
@@ -87,9 +87,7 @@
       <tr>
         <th scope="row" class="bg-content">
           <p class="order-title2">
-          <!-- ({{item.mealname}})   -->
-            <!-- ({{item.DishName}})   -->
-            <!-- {{mealname}} -->
+            ({{this.cart.mealname}})
             {{item.CategoryName}}</p>
         </th>
         <td class="bg-content">
