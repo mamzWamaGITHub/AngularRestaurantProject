@@ -9,6 +9,7 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 import { ConfirmDialogModel, AlertComponent } from '../alert/alert.component';
 import * as _swal from 'sweetalert';
 import { SweetAlert } from 'sweetalert/typings/core';
+import { Cart } from 'src/app/models/cart';
 
 const swall: SweetAlert = _swal as any;
 @Component({
@@ -35,6 +36,8 @@ export class CustomerComponent implements OnInit {
   order: any = {};
   public error: any;
   public success: any;
+  public popoverTitle = 'Delete Order';
+  public popoverMessage = 'Are you sure to delete order';
   constructor(
     private cartservice: CartService,
     private localStorage: LocalStorageService,
@@ -127,8 +130,8 @@ export class CustomerComponent implements OnInit {
           this.order.CategoryRID = this.cart.CategoryRID;
           this.order.Quanity = this.cart.Quanity;
           this.order.Amount = this.cart.Amount;
-          this.api.postData('Cart', this.order)
-          .subscribe(
+
+          this.api.postData('Cart', this.order).subscribe(
             data => {
             console.log('buy', '1');
             this.localStorage.set('orders', data.order);
@@ -138,14 +141,13 @@ export class CustomerComponent implements OnInit {
             this.cartservice.clear();
             this.router.navigate(['/']);
           },
-            (
-              error => {
+          error => {
                 this.loaderService.display(false);
                 swall('Oops!', 'Something went wrong!', 'error');
                 console.log('Error occured.');
                 this.error = error;
-          })
-          );
+          }
+        );
       }
         this.dialogRef = null;
     });

@@ -1,7 +1,8 @@
 <div class="container wrapper">
   <div class="row top">
     <div class="col bg-top-color" (click)="showTable()">
-      <p class="title-top1">Tables</p>
+      <p class="title-top1">Tables
+      </p>
     </div>
     <div class="col bg-top-color">
       <p class="title-top2">New Customer</p>
@@ -81,6 +82,9 @@
         <th scope="col" class="bg-head">          
           <p class="order-title1">Amount</p>
         </th>
+        <th scope="col" class="bg-head">          
+          <p class="order-title1">Action</p>
+        </th>
       </tr>
     </thead>
     <tbody class="order-items" *ngFor="let item of cart.items">
@@ -109,6 +113,19 @@
         <td class="bg-content">
           <p class="order-title2" >$  {{(item.Prize * item.Quanity) + item.Tax}} </p>
         </td>
+        <td class="bg-content">
+          <p class="order-title2"       
+          class="btn btn-default"
+          mwlConfirmationPopover
+          [popoverTitle]="popoverTitle"
+          [popoverMessage]="popoverMessage"
+          placement="left"
+          (confirm)="cartservice.deleteFromCart(item)"
+          (cancel)="cancelClicked = true">
+          <mat-icon>cancel_presentation</mat-icon>
+        </p>
+          
+        </td>
       </tr>
     </tbody>
     <tfoot>
@@ -131,6 +148,11 @@
           <th scope="col" class="foot-bg">          
             <p class="order-title1">$ 
               {{cartservice.getFinalTAmount()}}
+            </p>
+          </th>
+          <th scope="col" class="foot-bg">          
+            <p class="order-title1">
+              -
             </p>
           </th>
         </tr>

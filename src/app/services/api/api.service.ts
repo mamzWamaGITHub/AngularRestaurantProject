@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { map, catchError, tap, startWith } from 'rxjs/operators';
+import { map, catchError, tap, startWith, retry } from 'rxjs/operators';
+import { Http, Response, RequestOptions } from '@angular/http';
 
 @Injectable({
   providedIn: 'root'
@@ -32,10 +33,9 @@ export class ApiService {
     postData(endpoint: string, data): Observable<any> {
       const fullUrl: string = this.url + endpoint;
       return this.http.post(fullUrl,
-        data, this.httpOptions).pipe(
-        map(this.Data)
-        ).pipe(catchError(this.handleError));
+        data, this.httpOptions);
     }
+
     public handleError(error: any) {
       const errMsg = (error.message) ? error.message :
         error.status ? `${error.status} - ${error.statusText}` : 'Server error';
