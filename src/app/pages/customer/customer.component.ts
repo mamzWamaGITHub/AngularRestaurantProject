@@ -35,9 +35,6 @@ export class CustomerComponent implements OnInit {
   order: any = {};
   public error: any;
   public success: any;
-  public popoverTitle = 'Cancel Order';
-  public popoverMessage = 'Are You Sure To Cancel Order';
-
   constructor(
     private cartservice: CartService,
     private localStorage: LocalStorageService,
@@ -98,8 +95,19 @@ export class CustomerComponent implements OnInit {
       this.cartservice.decreaseCount(item);
   }
   cancelOrder() {
-    this.cartservice.clear();
-    this.router.navigate(['/']);
+    swall({
+      title: 'Are you sure?',
+      text: 'Are you sure to cancel order?',
+      icon: 'warning',
+      dangerMode: true,
+    })
+    .then(willDelete => {
+      if (willDelete) {
+        this.cartservice.clear();
+        this.router.navigate(['/']);
+        swall('Deleted!', 'Your imaginary item has been deleted!', 'success');
+      }
+    });
   }
   palceOrder(): void {
       const message = `Are you sure you want to do this?`;

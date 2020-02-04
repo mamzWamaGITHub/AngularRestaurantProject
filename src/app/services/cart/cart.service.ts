@@ -6,12 +6,12 @@ import { Injectable } from '@angular/core';
 })
 export class CartService {
   cart =   this.storage.get('cart') || {
-      items: [
-      ],
+      items: [],
       TableRID : '',
       CompanyID: '',
       MenuRID: '',
       CategoryRID: '',
+      DishName: '',
       Amount: 0,
 };
   constructor(
