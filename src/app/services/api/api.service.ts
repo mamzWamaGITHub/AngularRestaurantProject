@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders,  } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { map, catchError, tap, startWith, retry } from 'rxjs/operators';
-import { Http, Response, RequestOptions } from '@angular/http';
+import { map, catchError, tap, startWith } from 'rxjs/operators';
+import { Http, Response } from '@angular/http';
 
 @Injectable({
   providedIn: 'root'

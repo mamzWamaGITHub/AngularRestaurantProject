@@ -9,7 +9,6 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 import { ConfirmDialogModel, AlertComponent } from '../alert/alert.component';
 import * as _swal from 'sweetalert';
 import { SweetAlert } from 'sweetalert/typings/core';
-import { Cart } from 'src/app/models/cart';
 
 const swall: SweetAlert = _swal as any;
 @Component({
@@ -33,7 +32,10 @@ export class CustomerComponent implements OnInit {
     customername: 'One',
     status: 'Pending'
   };
-  order: any = {};
+  order: any = {
+    CustomerRID: 79,
+    CartID: 75
+  };
   public error: any;
   public success: any;
   public popoverTitle = 'Delete Order';
@@ -130,7 +132,8 @@ export class CustomerComponent implements OnInit {
           this.order.CategoryRID = this.cart.CategoryRID;
           this.order.Quanity = this.cart.Quanity;
           this.order.Amount = this.cart.Amount;
-
+          // this.order.CustomerRID = 79;
+          // this.order.CartID = 75;
           this.api.postData('Cart', this.order).subscribe(
             data => {
             console.log('buy', '1');
