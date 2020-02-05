@@ -9,6 +9,7 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 import { ConfirmDialogModel, AlertComponent } from '../alert/alert.component';
 import * as _swal from 'sweetalert';
 import { SweetAlert } from 'sweetalert/typings/core';
+import { RequestOptions, Headers } from '@angular/http';
 
 const swall: SweetAlert = _swal as any;
 @Component({
@@ -134,7 +135,11 @@ export class CustomerComponent implements OnInit {
           this.order.Amount = this.cart.Amount;
           // this.order.CustomerRID = 79;
           // this.order.CartID = 75;
-          this.api.postData('Cart', this.order).subscribe(
+          const headers = new Headers();
+          headers.append('Content-Type', 'application/json');
+          const options = new RequestOptions({headers});
+          console.log(headers);
+          this.api.postData('Cart', this.order, options).subscribe(
             data => {
             console.log('buy', '1');
             this.localStorage.set('orders', data.order);

@@ -30,7 +30,7 @@ export class ApiService {
         map(this.Data)
       );
     }
-    postData(endpoint: string, data): Observable<any> {
+    postData(endpoint: string, data, headers): Observable<any> {
       const fullUrl: string = this.url + endpoint;
       return this.http.post(fullUrl,
         data, this.httpOptions);
