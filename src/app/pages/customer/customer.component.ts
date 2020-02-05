@@ -141,9 +141,8 @@ export class CustomerComponent implements OnInit {
           console.log(headers);
           this.api.postData('Cart', this.order, options).subscribe(
             data => {
-            console.log('buy', '1');
-            this.localStorage.set('orders', data.order);
-            console.log(data.order, 'buycart');
+            console.log(data);
+            this.localStorage.set('orders', data);
             this.loaderService.display(false);
             swall('Data Inserted Sucfully');
             this.cartservice.clear();
