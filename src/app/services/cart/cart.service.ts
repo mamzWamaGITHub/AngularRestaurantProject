@@ -7,12 +7,14 @@ import { Injectable } from '@angular/core';
 export class CartService {
   cart =   this.storage.get('cart') || {
       items: [],
+      DishNames: [],
       TableRID : '',
       CompanyID: '',
       MenuRID: '',
       CategoryRID: '',
-      DishName: '',
       Amount: 0,
+      CustomerRID: 79,
+      CartID: 75,
 };
   constructor(
     public storage: LocalStorageService
@@ -26,12 +28,15 @@ export class CartService {
     acc + Number( Number(item.Prize)  *  Number(item.Quanity)) + Number(item.Tax), 0);
   }
   getTableId(item) {
+    this.cart.items = this.cart.items.filter(elm => elm.CategoryId !== elm.CategoryId);
+    this.cart.DishNames = this.cart.items.filter(elm => elm.DishID !== elm.DishID);
+    this.storage.clear();
     this.cart.TableRID = item.RID;
     this.cart.CompanyID = item.CompanyID;
   }
   getMealId(item) {
     this.cart.MenuRID = item.DishID;
-    this.cart.DishName = item.DishName;
+    this.cart.DishNames.push(item);
   }
   public exist(item) {
     return this.cart.items.filter(elm => elm.CategoryId === item.CategoryId).length;
@@ -76,13 +81,28 @@ export class CartService {
     if (!this.exist(item)) { return; }
     item.isincart = false;
     this.cart.items = this.cart.items.filter(elm => elm.CategoryId !== item.CategoryId);
+    this.cart.DishNames = this.cart.items.filter(elm => elm.DishID !== item.DishID);
+    if (!this.cart.items) {
+      this.cart.TableRID = '';
+      this.cart.CompanyID = '';
+      this.cart.MenuRID = '';
+      this.cart.CategoryRID = '';
+      this.cart.DishNames = [];
+    }
     this.cartChanged();
     return this.cart;
   }
   clear() {
     this.cart = {
       items: [],
-      Amount: 0
+      DishNames: [],
+      TableRID : '',
+      CompanyID: '',
+      MenuRID: '',
+      CategoryRID: '',
+      Amount: 0,
+      CustomerRID: '',
+      CartID: '',
     };
     this.storage.remove('cart');
     this.cartChanged();

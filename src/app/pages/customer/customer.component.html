@@ -86,12 +86,11 @@
           <p class="order-title1">Action</p>
         </th>
       </tr>
-    </thead>
+    </thead>   
     <tbody class="order-items" *ngFor="let item of cart.items">
       <tr>
         <th scope="row" class="bg-content">
           <p class="order-title2">
-            <!-- ({{this.cart.DishName}}) -->
             {{item.CategoryName}}</p>
         </th>
         <td class="bg-content">

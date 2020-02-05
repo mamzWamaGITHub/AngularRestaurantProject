@@ -34,8 +34,6 @@ export class CustomerComponent implements OnInit {
     status: 'Pending'
   };
   order: any = {
-    CustomerRID: 79,
-    CartID: 75
   };
   public error: any;
   public success: any;
@@ -89,6 +87,7 @@ export class CustomerComponent implements OnInit {
   showCats(meal) {
     this.showcats = true;
     this.mealname = meal.DishName;
+    swall('You Selected The Dish' +  '    '    + (this.mealname));
     this.mealid = meal.DishID;
     this.subcats =  meal.DishCategories.map(elm => {
        return elm;
@@ -111,7 +110,8 @@ export class CustomerComponent implements OnInit {
       if (willDelete) {
         this.cartservice.clear();
         this.router.navigate(['/']);
-        swall('Deleted!', 'Your imaginary item has been deleted!', 'success');
+        swall('Canceled!', 'Your imaginary item has been canceled!', 'success');
+        window.location.reload();
       }
     });
   }
@@ -133,20 +133,20 @@ export class CustomerComponent implements OnInit {
           this.order.CategoryRID = this.cart.CategoryRID;
           this.order.Quanity = this.cart.Quanity;
           this.order.Amount = this.cart.Amount;
-          // this.order.CustomerRID = 79;
-          // this.order.CartID = 75;
+          this.order.CustomerRID = this.cart.CustomerRID;
+          this.order.CartID = this.cart.CartID;
           const headers = new Headers();
           headers.append('Content-Type', 'application/json');
           const options = new RequestOptions({headers});
-          console.log(headers);
+          swall('The order in progress');
           this.api.postData('Cart', this.order, options).subscribe(
             data => {
-            console.log(data);
             this.localStorage.set('orders', data);
             this.loaderService.display(false);
             swall('Data Inserted Sucfully');
             this.cartservice.clear();
             this.router.navigate(['/']);
+            window.location.reload();
           },
           error => {
                 this.loaderService.display(false);
