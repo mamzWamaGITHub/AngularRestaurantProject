@@ -92,13 +92,11 @@ export class CartService {
     item.isincart = false;
     this.cart.items = this.cart.items.filter(elm => elm.CategoryId !== item.CategoryId);
     this.cart.DishNames = this.cart.DishNames.filter(elm => elm.DishID !== item.DishID);
-    this.cart.Tables = this.cart.Tables.filter(elm => elm.RID !== item.RID);
+    this.cart.Tables = [];
     if (!this.cart.items) {
-      this.cart.Tables = [];
       this.cart.CompanyID = '';
       this.cart.MenuRID = '';
       this.cart.CategoryRID = '';
-      this.cart.DishNames = [];
     }
     this.cartChanged();
     return this.cart;
@@ -120,6 +118,7 @@ export class CartService {
   }
 addToCart(item) {
   if (!this.exist(item))  {
+    item.isincart = true;
     this.cart.CategoryRID = item.CategoryId;
     this.cart.items.push(item);
     this.cartChanged();
