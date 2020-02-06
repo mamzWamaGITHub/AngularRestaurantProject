@@ -166,5 +166,6 @@ export class CustomerComponent implements OnInit {
     this.showdish = true;
     this.showtable = false;
     this.tablename = table.TableName;
+    swall('The table in progress' +  '    '    +  this.tablename);
   }
 }

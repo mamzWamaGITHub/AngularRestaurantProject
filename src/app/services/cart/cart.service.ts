@@ -28,9 +28,6 @@ export class CartService {
     acc + Number( Number(item.Prize)  *  Number(item.Quanity)) + Number(item.Tax), 0);
   }
   getTableId(item) {
-    this.cart.items = this.cart.items.filter(elm => elm.CategoryId !== elm.CategoryId);
-    this.cart.DishNames = this.cart.items.filter(elm => elm.DishID !== elm.DishID);
-    this.storage.clear();
     this.cart.TableRID = item.RID;
     this.cart.CompanyID = item.CompanyID;
   }
