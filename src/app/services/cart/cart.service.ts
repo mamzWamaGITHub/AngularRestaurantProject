@@ -1,6 +1,9 @@
 import { LocalStorageService } from 'src/app/services/storage/storage.service';
 import { Injectable } from '@angular/core';
+import * as _swal from 'sweetalert';
+import { SweetAlert } from 'sweetalert/typings/core';
 
+const swall: SweetAlert = _swal as any;
 @Injectable({
   providedIn: 'root'
 })
@@ -8,6 +11,7 @@ export class CartService {
   cart =   this.storage.get('cart') || {
       items: [],
       DishNames: [],
+      Tables: [],
       TableRID : '',
       CompanyID: '',
       MenuRID: '',
@@ -30,13 +34,24 @@ export class CartService {
   getTableId(item) {
     this.cart.TableRID = item.RID;
     this.cart.CompanyID = item.CompanyID;
+    if (!this.existtable(item))   {
+      this.cart.Tables.push(item);
+    } else if (this.existtable(item)  ) {
+      swall('The table in progressing now' +  '    '    +  item.TableName);
+    }
+    console.log(this.cart.Tables);
   }
   getMealId(item) {
     this.cart.MenuRID = item.DishID;
     this.cart.DishNames.push(item);
+    // this.cart.Tables.push(item);
+    // console.log(this.cart.Tables);
   }
   public exist(item) {
     return this.cart.items.filter(elm => elm.CategoryId === item.CategoryId).length;
+  }
+  public existtable(item) {
+    return this.cart.Tables.filter(elm => elm.RID === item.RID).length;
   }
    cartChanged() {
     this.cart.items = this.cart.items.map(item => {
@@ -80,7 +95,7 @@ export class CartService {
     this.cart.items = this.cart.items.filter(elm => elm.CategoryId !== item.CategoryId);
     this.cart.DishNames = this.cart.items.filter(elm => elm.DishID !== item.DishID);
     if (!this.cart.items) {
-      this.cart.TableRID = '';
+      this.cart.Tables = [];
       this.cart.CompanyID = '';
       this.cart.MenuRID = '';
       this.cart.CategoryRID = '';
@@ -93,7 +108,7 @@ export class CartService {
     this.cart = {
       items: [],
       DishNames: [],
-      TableRID : '',
+      Tables : [],
       CompanyID: '',
       MenuRID: '',
       CategoryRID: '',
