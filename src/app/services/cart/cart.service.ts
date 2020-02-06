@@ -43,9 +43,7 @@ export class CartService {
   }
   getMealId(item) {
     this.cart.MenuRID = item.DishID;
-    this.cart.DishNames.push(item);
-    // this.cart.Tables.push(item);
-    // console.log(this.cart.Tables);
+    this.cart.DishNames.push({DishName: item.DishName});
   }
   public exist(item) {
     return this.cart.items.filter(elm => elm.CategoryId === item.CategoryId).length;
@@ -93,7 +91,8 @@ export class CartService {
     if (!this.exist(item)) { return; }
     item.isincart = false;
     this.cart.items = this.cart.items.filter(elm => elm.CategoryId !== item.CategoryId);
-    this.cart.DishNames = this.cart.items.filter(elm => elm.DishID !== item.DishID);
+    this.cart.DishNames = this.cart.DishNames.filter(elm => elm.DishID !== item.DishID);
+    this.cart.Tables = this.cart.Tables.filter(elm => elm.RID !== item.RID);
     if (!this.cart.items) {
       this.cart.Tables = [];
       this.cart.CompanyID = '';
