@@ -21,7 +21,7 @@ export class CustomerComponent implements OnInit {
   public dialogRef: MatDialogRef<AlertComponent>;
   meals: any = [];
   tables: any = [];
-  cart: any  = [];
+  cart: any  = {};
   showcats = false;
   showtable = true;
   showdish = false;
@@ -37,6 +37,7 @@ export class CustomerComponent implements OnInit {
   };
   public error: any;
   public success: any;
+  dish: any;
   public popoverTitle = 'Delete Order';
   public popoverMessage = 'Are you sure to delete order';
   constructor(

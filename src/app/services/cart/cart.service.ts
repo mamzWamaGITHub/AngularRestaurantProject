@@ -91,7 +91,7 @@ export class CartService {
     if (!this.exist(item)) { return; }
     item.isincart = false;
     this.cart.items = this.cart.items.filter(elm => elm.CategoryId !== item.CategoryId);
-    this.cart.DishNames = this.cart.DishNames.filter(elm => elm.DishID !== item.DishID);
+    this.cart.DishNames = [];
     this.cart.Tables = [];
     if (!this.cart.items) {
       this.cart.CompanyID = '';
