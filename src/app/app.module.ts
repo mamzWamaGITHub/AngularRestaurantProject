@@ -17,7 +17,6 @@ import { AlertService } from './services/alert/alert.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CustomMaterialModule } from './pages/custom-material/custom-material.module';
 import { MatIconModule } from '@angular/material';
-import { FilterPipe } from './filter.pipe';
 
 @NgModule({
   declarations: [

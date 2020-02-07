@@ -35,7 +35,7 @@ export class CartService {
     this.cart.TableRID = item.RID;
     this.cart.CompanyID = item.CompanyID;
     if (!this.existtable(item))   {
-      this.cart.Tables.push(item);
+      this.cart.Tables.push({RID: item.RID});
     } else if (this.existtable(item)  ) {
       swall('The table in progressing now' +  '    '    +  item.TableName);
     }
