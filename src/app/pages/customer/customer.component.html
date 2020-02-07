@@ -66,6 +66,9 @@
     <thead>
       <tr>
         <th scope="col" class="bg-head">
+          <p class="order-title1">TableRID</p>
+        </th>
+        <th scope="col" class="bg-head">
           <p class="order-title1">Item</p>
         </th>
         <th scope="col" class="bg-head">
@@ -89,32 +92,34 @@
       </tr>
     </thead> 
 
-    <tbody class="order-items" >
-      <tr *ngFor="let item of cart.items">
+    <tbody class="order-items" *ngFor="let item of cart.items">
+      <tr *ngIf="true">
+        <td class="bg-content">
+          <p class="order-title2"> {{item.RID}} </p>
+        </td>
         <th scope="row" class="bg-content">
          <p class="order-title2"> 
-            {{item.DishName}}</p> 
-          <p class="order-title2">
-            {{item.CategoryName}}</p>
+            ({{item.DishName}})
+            {{item.item.CategoryName}}</p>
         </th>
         <td class="bg-content">
           <p class="order-title2"> 
-            <span class="glyphicon glyphicon-minus minus" (click)="decreaseCount(item)">-</span>  
-            <span class="count"> {{item.Quanity}} </span>
-            <span class="glyphicon glyphicon-plus plus" (click)="increaseCount(item)">+</span>
+            <span class="glyphicon glyphicon-minus minus" (click)="decreaseCount(item.item)">-</span>  
+            <span class="count"> {{item.item.Quanity}} </span>
+            <span class="glyphicon glyphicon-plus plus" (click)="increaseCount(item.item)">+</span>
           </p>
         </td>
         <td class="bg-content">
-          <p class="order-title2">$ {{(item.Prize * item.Quanity)}}</p>
+          <p class="order-title2">$ {{(item.item.Prize * item.item.Quanity)}}</p>
         </td>
         <td class="bg-content"> 
-          <p class="order-title2">{{item.disc || 0}}</p>
+          <p class="order-title2">{{item.item.disc || 0}}</p>
         </td>
         <td class="bg-content">
-          <p class="order-title2"> $ {{item.Tax}}</p>
+          <p class="order-title2"> $ {{item.item.Tax}}</p>
         </td>
         <td class="bg-content">
-          <p class="order-title2" >$  {{(item.Prize * item.Quanity) + item.Tax}} </p>
+          <p class="order-title2" >$  {{(item.item.Prize * item.item.Quanity) + item.item.Tax}} </p>
         </td>
         <td class="bg-content">
           <p class="order-title2"       
@@ -123,7 +128,7 @@
           [popoverTitle]="popoverTitle"
           [popoverMessage]="popoverMessage"
           placement="left"
-          (confirm)="cartservice.deleteFromCart(item)"
+          (confirm)="cartservice.deleteFromCart(item.item)"
           (cancel)="cancelClicked = true">
           <mat-icon>cancel_presentation</mat-icon>
         </p>
@@ -133,6 +138,9 @@
     </tbody>
     <tfoot>
         <tr>
+          <th scope="col" class="foot-bg">
+            <p class="order-title1"> _  </p>
+          </th>
           <th scope="col" class="foot-bg">
             <p class="order-title1"> _  </p>
           </th>
