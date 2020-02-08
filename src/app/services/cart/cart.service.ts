@@ -24,7 +24,7 @@ export class CartService {
   }
   getTableId(item) {
     if (!this.existtable(item))   {
-      this.cart.items.TableRID = item.RID;
+      this.cart.items.TableName = item.TableName;
     } else if (this.existtable(item)  ) {
       swall(item.TableName +  '    ' + 'Is In Progressing Now' );
     }
@@ -36,7 +36,7 @@ export class CartService {
     return this.cart.items.filter(elm => elm.item.CategoryId === item.CategoryId).length;
   }
   public existtable(item) {
-    return this.cart.items.filter(elm => elm.RID === item.RID).length;
+    return this.cart.items.filter(elm => elm.TableName === item.TableName).length;
   }
    cartChanged() {
     this.cart.items = this.cart.items.map(item => {
@@ -90,13 +90,16 @@ export class CartService {
   }
 addToCart(item) {
   if (!this.exist(item) && !this.existtable(item))  {
-    item.isincart = true;
-    this.cart.items.push({
-      RID: this.cart.items.TableRID,
-      DishName: this.cart.items.DishName,
-      item
-    });
-    this.cartChanged();
+    // if (!this.cart.items.TableName && !this.cart.items.DishName) {
+      swall('You Should Add TableName And DishName');
+      item.isincart = true;
+      this.cart.items.push({
+        TableName: this.cart.items.TableName,
+        DishName: this.cart.items.DishName,
+        item
+      });
+      this.cartChanged();
+    // }
 }
 }
 getCart() {
@@ -106,7 +109,8 @@ getItemCount() {
   return this.cart.items.reduce((acc, item) => acc + Number( Number(item.item.Quanity)), 0);
 }
 getItemTotalPrice() {
-  return this.cart.items.reduce((acc, item) => acc + Number( Number(item.item.Prize)) * Number(item.item.Quanity), 0);
+  return this.cart.items.reduce((acc, item) =>
+  acc + Number( Number(item.item.Prize)) * Number(item.item.Quanity), 0);
 }
 getFinalTAmount() {
   return this.cart.items.reduce((acc, item) =>
