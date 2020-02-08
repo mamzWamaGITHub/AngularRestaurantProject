@@ -26,7 +26,7 @@ export class CartService {
     this.cart.items.TableName = item.TableName;
     if (!this.existtable(item))   {
       this.cart.items.TableName = item.TableName;
-    } else if (this.existtable(item)  ) {
+    } else if (this.existtable(item)) {
       swall(item.TableName +  '    ' + 'Is In Progressing Now' );
     }
   }
@@ -34,7 +34,6 @@ export class CartService {
     this.cart.items.DishName = item.DishName;
   }
   public exist(item) {
-    swall('Dish Is Exsit In This Table');
     return this.cart.items.filter(elm => elm.item.CategoryId === item.CategoryId).length;
   }
   public existtable(item) {

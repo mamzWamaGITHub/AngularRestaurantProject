@@ -38,6 +38,7 @@ export class CustomerComponent implements OnInit {
   public error: any;
   public success: any;
   dish: any;
+  itemstable: any = [];
   public popoverTitle = 'Delete Order';
   public popoverMessage = 'Are you sure to delete order';
   constructor(
@@ -167,5 +168,10 @@ export class CustomerComponent implements OnInit {
     this.showdish = true;
     this.showtable = false;
     this.tablename = table.TableName;
+
+    this.itemstable = this.cart.items.filter(elm =>
+        elm.TableName === this.tablename
+    );
+    console.log(this.itemstable, 'filter');
   }
 }
