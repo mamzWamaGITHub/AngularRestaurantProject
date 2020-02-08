@@ -9,7 +9,7 @@
     </div>
   </div> 
   <div *ngIf="showtable" class="row row-cols-4 row-cols-lg-4 row-cols-md-4 row-cols-sm-3 table-wapper">
-    <div class="col meal-category" *ngFor="let table of tables" (click)="selectDish(table);cartservice.getTableId(table)">
+    <div class="col meal-category" *ngFor="let table of tables" (click)="selectDish(table);cartservice.getTableId(table);">
       <div class="tab-bg">
         <span class="tab-name">{{table.TableName}}</span>
       </div>

@@ -36,6 +36,7 @@ export class CustomerComponent implements OnInit {
   };
   order: any = {
   };
+  itemstable: any = {};
   public error: any;
   public success: any;
   dish: any;
@@ -168,5 +169,8 @@ export class CustomerComponent implements OnInit {
     this.showdish = true;
     this.showtable = false;
     this.tablename = table.TableName;
+    this.itemstable = this.cart.items.filter(elm =>
+      elm.TableRID === table.RID
+    );
   }
 }

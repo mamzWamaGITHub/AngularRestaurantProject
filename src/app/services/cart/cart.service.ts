@@ -33,9 +33,6 @@ export class CartService {
     } else if (this.existtable(item)) {
       swall(item.TableName +  '    ' + 'Is In Progressing Now' );
     }
-  //   this.cart.items = this.cart.items.filter(elm =>
-  //     elm.TableRID === item.TableRID
-  // );
   }
   getMealId(item) {
     this.cart.items.DishName = item.DishName;
@@ -98,7 +95,7 @@ export class CartService {
     this.cartChanged();
   }
 addToCart(item) {
-  if (!this.exist(item) && !this.existtable(item))  {
+  if (!this.exist(item) || !this.existtable(item))  {
       if (!this.cart.items.TableName) {
           swall('You Should Select TableName');
       } else if (!this.cart.items.DishName) {
