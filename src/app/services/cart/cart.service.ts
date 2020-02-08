@@ -89,9 +89,7 @@ export class CartService {
     this.cartChanged();
   }
 addToCart(item) {
-  if (!this.exist(item) && !this.existtable(item))  {
-    // if (!this.cart.items.TableName && !this.cart.items.DishName) {
-      swall('You Should Add TableName And DishName');
+  if (!this.exist(item) || !this.existtable(item))  {
       item.isincart = true;
       this.cart.items.push({
         TableName: this.cart.items.TableName,
@@ -99,7 +97,6 @@ addToCart(item) {
         item
       });
       this.cartChanged();
-    // }
 }
 }
 getCart() {
