@@ -23,6 +23,7 @@ export class CartService {
     acc + Number( Number(item.item.Prize)  *  Number(item.item.Quanity)) + Number(item.item.Tax), 0);
   }
   getTableId(item) {
+    this.cart.items.TableName = item.TableName;
     if (!this.existtable(item))   {
       this.cart.items.TableName = item.TableName;
     } else if (this.existtable(item)  ) {
@@ -33,6 +34,7 @@ export class CartService {
     this.cart.items.DishName = item.DishName;
   }
   public exist(item) {
+    swall('Dish Is Exsit In This Table');
     return this.cart.items.filter(elm => elm.item.CategoryId === item.CategoryId).length;
   }
   public existtable(item) {
@@ -89,15 +91,21 @@ export class CartService {
     this.cartChanged();
   }
 addToCart(item) {
-  if (!this.exist(item) || !this.existtable(item))  {
-      item.isincart = true;
-      this.cart.items.push({
-        TableName: this.cart.items.TableName,
-        DishName: this.cart.items.DishName,
-        item
-      });
-      this.cartChanged();
-}
+  if (!this.exist(item) && !this.existtable(item))  {
+      if (!this.cart.items.TableName) {
+          swall('You Should Select TableName');
+      } else if (!this.cart.items.DishName) {
+        swall('You Should Select DishName');
+      } else {
+        item.isincart = true;
+        this.cart.items.push({
+          TableName: this.cart.items.TableName,
+          DishName: this.cart.items.DishName,
+          item
+        });
+        this.cartChanged();
+      }
+  }
 }
 getCart() {
   return this.cart;
