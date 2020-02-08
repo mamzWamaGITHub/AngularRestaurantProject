@@ -24,14 +24,22 @@ export class CartService {
   }
   getTableId(item) {
     this.cart.items.TableName = item.TableName;
+    this.cart.items.TableRID = item.RID;
+    this.cart.items.CompanyID = item.CompanyID;
     if (!this.existtable(item))   {
       this.cart.items.TableName = item.TableName;
+      this.cart.items.TableRID = item.RID;
+      this.cart.items.CompanyID = item.CompanyID;
     } else if (this.existtable(item)) {
       swall(item.TableName +  '    ' + 'Is In Progressing Now' );
     }
+  //   this.cart.items = this.cart.items.filter(elm =>
+  //     elm.TableRID === item.TableRID
+  // );
   }
   getMealId(item) {
     this.cart.items.DishName = item.DishName;
+    this.cart.items.MenuRID = item.DishID;
   }
   public exist(item) {
     return this.cart.items.filter(elm => elm.item.CategoryId === item.CategoryId).length;
@@ -99,7 +107,12 @@ addToCart(item) {
         item.isincart = true;
         this.cart.items.push({
           TableName: this.cart.items.TableName,
-          DishName: this.cart.items.DishName,
+          TableRID:  this.cart.items.TableRID,
+          CompanyID: this.cart.items.CompanyID,
+          DishName:  this.cart.items.DishName,
+          MenuRID: this.cart.items.MenuRID,
+          CustomerRID: this.cart.items.CustomerRID,
+          CartID: this.cart.items.CartID,
           item
         });
         this.cartChanged();
