@@ -36,7 +36,6 @@ export class CustomerComponent implements OnInit {
   };
   order: any = {
   };
-  itemstable: any = {};
   public error: any;
   public success: any;
   dish: any;
@@ -118,7 +117,8 @@ export class CustomerComponent implements OnInit {
       }
     });
   }
-  palceOrder(): void {
+  palceOrder(item): void {
+      console.log(item);
       const message = `Are you sure you want to do this?`;
       const dialogData = new ConfirmDialogModel('Place Order', message);
       const dialogRef = this.dialog.open(AlertComponent, {
@@ -130,14 +130,15 @@ export class CustomerComponent implements OnInit {
         if (result) {
           // do confirmation actions
           this.loaderService.display(true);
-          this.order.TableRID  = this.cart.TableRID;
-          this.order.CompanyID = this.cart.CompanyID;
-          this.order.MenuRID = this.cart.MenuRID;
-          this.order.CategoryRID = this.cart.CategoryRID;
-          this.order.Quanity = this.cart.Quanity;
-          this.order.Amount = this.cart.Amount;
+          this.order.TableRID  = item.TableRID;
+          this.order.CompanyID = item.CompanyID;
+          this.order.MenuRID = item.MenuRID;
+          this.order.CategoryRID = item.item.CategoryId;
+          this.order.Quanity = item.item.Quanity;
+          this.order.Amount = item.item.Amount + item.item.Tax;
           this.order.CustomerRID = this.cart.CustomerRID;
           this.order.CartID = this.cart.CartID;
+          console.log(this.order, 'order');
           const headers = new Headers();
           headers.append('Content-Type', 'application/json');
           const options = new RequestOptions({headers});
@@ -169,8 +170,6 @@ export class CustomerComponent implements OnInit {
     this.showdish = true;
     this.showtable = false;
     this.tablename = table.TableName;
-    this.itemstable = this.cart.items.filter(elm =>
-      elm.TableRID === table.RID
-    );
+    this.cart.items = this.cart.items.filter(elm => elm.TableRID === table.RID);
   }
 }
