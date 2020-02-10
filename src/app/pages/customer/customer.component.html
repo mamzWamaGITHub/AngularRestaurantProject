@@ -133,9 +133,6 @@
         </p>
           
         </td>
-        <td>
-          <button  type="button" class="btn btn-light btn-lg btn-ord" (click)="palceOrder(item)">Place Order</button> 
-        </td>
       </tr>
     </tbody>
     <tfoot>
@@ -173,7 +170,7 @@
   </table>
 </div>
   <div class="container" *ngIf="cart && cart.items && cart.items.length && showdish">
-    <div class="row row-cols-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-2">
+    <div class="row row-cols-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-2" *ngFor="let order of cart.items | slice:0:1">
       <div class="col">
         <p class="order-status">
           Order Status: {{this.data.status}}
@@ -181,6 +178,7 @@
       </div>
       <div class="col btn-order">
         <button  type="button" class="btn btn-light btn-lg btn-ord" (click)="cancelOrder()">Cancel Order</button> 
+        <button  type="button" class="btn btn-light btn-lg btn-ord" (click)="palceOrder(order)">Place Order</button> 
       </div>
     </div>
   </div>  
