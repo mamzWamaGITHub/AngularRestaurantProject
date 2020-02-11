@@ -21,7 +21,7 @@ export class CustomerComponent implements OnInit {
   public dialogRef: MatDialogRef<AlertComponent>;
   meals: any = [];
   tables: any = [];
-  cart: any  = {
+  order: any  = {
   };
   showcats = false;
   showtable = true;
@@ -34,8 +34,7 @@ export class CustomerComponent implements OnInit {
     customername: 'One',
     status: 'Pending'
   };
-  order: any = {
-  };
+  items: any = [];
   public error: any;
   public success: any;
   dish: any;
@@ -51,7 +50,7 @@ export class CustomerComponent implements OnInit {
     public dialog: MatDialog,
     ) {
       this.loaderService.display(true);
-      this.meals = this.localStorage.get('cacheMeals');
+      // this.meals = this.localStorage.get('cacheMeals');
       this.api.getData('menus/1').subscribe(data => {
         console.log('success', '1');
         swall('Loading Finished');
@@ -84,7 +83,7 @@ export class CustomerComponent implements OnInit {
      }));
     }
     ngOnInit() {
-      this.cart = this.cartservice.getCart();
+      this.order = this.cartservice.getCart();
   }
   showCats(meal) {
     this.showcats = true;
@@ -136,8 +135,8 @@ export class CustomerComponent implements OnInit {
           this.order.CategoryRID = item.item.CategoryId;
           this.order.Quanity = item.item.Quanity;
           this.order.Amount = item.item.Amount + item.item.Tax;
-          this.order.CustomerRID = this.cart.CustomerRID;
-          this.order.CartID = this.cart.CartID;
+          this.order.CustomerRID = this.order.CustomerRID;
+          this.order.CartID = this.order.CartID;
           console.log(this.order, 'order');
           const headers = new Headers();
           headers.append('Content-Type', 'application/json');
@@ -164,12 +163,12 @@ export class CustomerComponent implements OnInit {
     });
   }
   showTable() {
-    this.showtable = !this.showtable;
+    this.showtable = true;
   }
   selectDish(table) {
     this.showdish = true;
     this.showtable = false;
     this.tablename = table.TableName;
-    this.cart.items = this.cart.items.filter(elm => elm.TableRID === table.RID);
+    // this.order.items = this.order.items.filter(elm =>  elm.TableRID === table.RID);
   }
 }

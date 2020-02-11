@@ -53,14 +53,14 @@
       </div>
     </div>
   </div>
-  <div class="row order-row"   *ngIf="cart && cart.items && cart.items.length && showdish">
+  <div class="row order-row"   *ngIf="order && order.items && order.items.length">
     <div class="col bg-color1">
       <p class="order-title">
         ORDERS
       </p>
     </div>
   </div>
-  <div class="table-responsive"  *ngIf="cart && cart.items && cart.items.length && showdish">    
+  <div class="table-responsive"  *ngIf="order && order.items && order.items.length">    
   <table class="table table-borderless order-table">
     <thead>
       <tr>
@@ -91,34 +91,36 @@
       </tr>
     </thead> 
 
-    <tbody  class="order-items" *ngFor="let item of cart.items; let i = index">
-      <tr>
-        <td class="bg-content">
-          <p class="order-title2"> {{item.TableName}} </p>
+    <tbody  class="order-items" *ngFor="let itemm of order.items; let i = index">
+      <tr *ngFor="let item of itemm.itemDetails">
+        <td  class="bg-content">
+          <p class="order-title2"> 
+            {{itemm.TableName}} 
+          </p>
         </td>
         <th scope="row" class="bg-content">
-         <p class="order-title2"> 
-            ({{item.DishName}})
-            {{item.item.CategoryName}}</p>
-        </th>
+          <p class="order-title2"> 
+            ({{itemm.DishName}})
+             {{item.CategoryName}}</p>
+         </th>
         <td class="bg-content">
           <p class="order-title2"> 
-            <span class="glyphicon glyphicon-minus minus" (click)="decreaseCount(item.item)">-</span>  
-            <span class="count"> {{item.item.Quanity}} </span>
-            <span class="glyphicon glyphicon-plus plus" (click)="increaseCount(item.item)">+</span>
+            <span class="glyphicon glyphicon-minus minus" (click)="decreaseCount(item)">-</span>  
+            <span class="count"> {{item.Quanity}} </span>
+            <span class="glyphicon glyphicon-plus plus" (click)="increaseCount(item)">+</span>
           </p>
         </td>
         <td class="bg-content">
-          <p class="order-title2">$ {{(item.item.Prize * item.item.Quanity)}}</p>
+          <p class="order-title2">$ {{(item.Prize * item.Quanity)}}</p>
         </td>
         <td class="bg-content"> 
-          <p class="order-title2">{{item.item.disc || 0}}</p>
+          <p class="order-title2">{{item.disc || 0}}</p>
         </td>
         <td class="bg-content">
-          <p class="order-title2"> $ {{item.item.Tax}}</p>
+          <p class="order-title2"> $ {{item.Tax}}</p>
         </td>
         <td class="bg-content">
-          <p class="order-title2" >$  {{(item.item.Prize * item.item.Quanity) + item.item.Tax}} </p>
+          <p class="order-title2" >$  {{(item.Prize * item.Quanity) + item.Tax}} </p>
         </td>
         <td class="bg-content">
           <p class="order-title2"       
@@ -127,7 +129,7 @@
           [popoverTitle]="popoverTitle"
           [popoverMessage]="popoverMessage"
           placement="left"
-          (confirm)="cartservice.deleteFromCart(item.item)"
+          (confirm)="cartservice.deleteFromCart(itemm)"
           (cancel)="cancelClicked = true">
           <mat-icon>cancel_presentation</mat-icon>
         </p>
@@ -169,8 +171,8 @@
     </tfoot>
   </table>
 </div>
-  <div class="container" *ngIf="cart && cart.items && cart.items.length && showdish">
-    <div class="row row-cols-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-2" *ngFor="let order of cart.items | slice:0:1">
+  <div class="container" *ngIf="order && order.items && order.items.length">
+    <div class="row row-cols-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-2">
       <div class="col">
         <p class="order-status">
           Order Status: {{this.data.status}}
@@ -178,7 +180,7 @@
       </div>
       <div class="col btn-order">
         <button  type="button" class="btn btn-light btn-lg btn-ord" (click)="cancelOrder()">Cancel Order</button> 
-        <button  type="button" class="btn btn-light btn-lg btn-ord" (click)="palceOrder(order)">Place Order</button> 
+        <button  type="button" class="btn btn-light btn-lg btn-ord" (click)="palceOrder()">Place Order</button> 
       </div>
     </div>
   </div>  

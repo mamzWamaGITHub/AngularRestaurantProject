@@ -8,10 +8,12 @@ const swall: SweetAlert = _swal as any;
   providedIn: 'root'
 })
 export class CartService {
-  cart =   this.storage.get('cart') || {
+  res = [];
+  order =   this.storage.get('order') || {
       items: []
 };
-  constructor(
+
+constructor(
     public storage: LocalStorageService
     ) { }
   /**
@@ -19,49 +21,58 @@ export class CartService {
    * @param items [{Prize: any, Quanity: any } ..]
    */
   calcTotalAmount(items) {
-    return   this.cart.items.reduce((acc, item) =>
-    acc + Number( Number(item.item.Prize)  *  Number(item.item.Quanity)) + Number(item.item.Tax), 0);
+    this.res = this.order.items.map((elm, i) => {
+      return elm.itemDetails[0];
+    });
+    return   this.res.reduce((acc, item) =>
+    acc + Number( Number(item.Prize)  *  Number(item.Quanity)) + Number(item.Tax), 0);
   }
   getTableId(item) {
-    this.cart.items.TableName = item.TableName;
-    this.cart.items.TableRID = item.RID;
-    this.cart.items.CompanyID = item.CompanyID;
+    this.order.items.TableName = item.TableName;
+    this.order.items.TableRID = item.RID;
+    this.order.items.CompanyID = item.CompanyID;
     if (!this.existtable(item))   {
-      this.cart.items.TableName = item.TableName;
-      this.cart.items.TableRID = item.RID;
-      this.cart.items.CompanyID = item.CompanyID;
+      this.order.items.TableName = item.TableName;
+      this.order.items.TableRID = item.RID;
+      this.order.items.CompanyID = item.CompanyID;
     } else if (this.existtable(item)) {
       swall(item.TableName +  '    ' + 'Is In Progressing Now' );
     }
   }
   getMealId(item) {
-    this.cart.items.DishName = item.DishName;
-    this.cart.items.MenuRID = item.DishID;
+    this.order.items.DishName = item.DishName;
+    this.order.items.MenuRID = item.DishID;
   }
   public exist(item) {
-    return this.cart.items.filter(elm => elm.item.CategoryId === item.CategoryId).length;
+    return this.order.items;
   }
   public existtable(item) {
-    return this.cart.items.filter(elm => elm.TableName === item.TableName).length;
+    return this.order.items.filter(elm => elm.TableRID === item.RID).length;
   }
    cartChanged() {
-    this.cart.items = this.cart.items.map(item => {
-      item.item.Amount = item.item.Prize * item.item.Quanity;
+    this.res = this.order.items.map((elm, i) => {
+      return elm.itemDetails[0];
+    });
+    this.order.items.itemDetails = this.res.map(item => {
+      item.Amount = item.Prize * item.Quanity;
       return item;
     });
-    this.cart.Amount = this.calcTotalAmount(this.cart.items);
-    this.cart.Quanity = this.getItemCount();
-    this.storage.set('cart', this.cart);
+    this.order.Amount = this.calcTotalAmount(this.order.items);
+    this.order.Quanity = this.getItemCount();
+    this.storage.set('order', this.order);
   }
   increaseCount(item) {
     if (!this.exist(item)) {
       item.Quanity = 1;
-      this.cart.items.push({item});
+      this.order.items.push([item]);
     } else {
-      this.cart.items = this.cart.items.map(elm => {
-        elm.item.Quanity = Number(elm.item.Quanity);
-        if (elm.item.CategoryId === item.CategoryId) {
-          elm.item.Quanity =  elm.item.Quanity + 1;
+      this.res = this.order.items.map((elm, i) => {
+        return elm.itemDetails[0];
+      });
+      this.order.items.itemDetails = this.res.map(elm => {
+        elm.Quanity = Number(elm.Quanity);
+        if (elm.CategoryId === item.CategoryId) {
+          elm.Quanity =  elm.Quanity + 1;
         }
         return elm;
       });
@@ -69,71 +80,89 @@ export class CartService {
     this.cartChanged();
   }
   decreaseCount(item) {
-    this.cart.items = this.cart.items.map(elm => {
-      if (elm.item.CategoryId === item.CategoryId) {
-          elm.item.Quanity--;
+    this.res = this.order.items.map((elm, i) => {
+      return elm.itemDetails[0];
+    });
+    this.order.items.itemDetails = this.res.map(elm => {
+      if (elm.CategoryId === item.CategoryId) {
+          elm.Quanity--;
       }
       return elm;
     });
     this.cartChanged();
   }
   find(item) {
-    return this.cart.items.filter(i => i.CategoryId === item.CategoryId)[0];
+    return this.order.items.filter(i => i.CategoryId === item.CategoryId)[0];
   }
   public deleteFromCart(item) {
     if (!this.exist(item)) { return; }
     item.isincart = false;
-    this.cart.items = this.cart.items.filter(elm => elm.item.CategoryId !== item.CategoryId);
+    this.order.items = this.order.items.filter(elm => elm.MenuRID !== item.MenuRID);
     this.cartChanged();
-    return this.cart;
+    return this.order;
   }
   clear() {
-    this.cart = {
+    this.order = {
       items: [],
     };
-    this.storage.remove('cart');
+    this.storage.remove('order');
     this.cartChanged();
   }
 addToCart(item) {
-  if (!this.exist(item) || !this.existtable(item))  {
-      if (!this.cart.items.TableName) {
+  if (!this.existtable(item))  {
+      if (!this.order.items.TableName) {
           swall('You Should Select TableName');
-      } else if (!this.cart.items.DishName) {
+      } else if (!this.order.items.DishName) {
         swall('You Should Select DishName');
       } else {
         item.isincart = true;
-        this.cart.items.push({
-          TableName: this.cart.items.TableName,
-          TableRID:  this.cart.items.TableRID,
-          CompanyID: this.cart.items.CompanyID,
-          DishName:  this.cart.items.DishName,
-          MenuRID: this.cart.items.MenuRID,
-          CustomerRID: this.cart.items.CustomerRID,
-          CartID: this.cart.items.CartID,
-          item
+        this.order.items.push({
+          TableName: this.order.items.TableName,
+          TableRID:  this.order.items.TableRID,
+          CompanyID: this.order.items.CompanyID,
+          DishName:  this.order.items.DishName,
+          MenuRID: this.order.items.MenuRID,
+          CustomerRID: this.order.items.CustomerRID,
+          orderID: this.order.items.orderID,
+          itemDetails: [item]
         });
         this.cartChanged();
       }
   }
 }
 getCart() {
-  return this.cart;
+  return this.order;
 }
 getItemCount() {
-  return this.cart.items.reduce((acc, item) => acc + Number( Number(item.item.Quanity)), 0);
+  this.res = this.order.items.map((elm, i) => {
+    return elm.itemDetails[0];
+  });
+  return this.res.reduce((acc, item) => acc + Number( Number(item.Quanity)), 0);
 }
 getItemTotalPrice() {
-  return this.cart.items.reduce((acc, item) =>
-  acc + Number( Number(item.item.Prize)) * Number(item.item.Quanity), 0);
+  this.res = this.order.items.map((elm, i) => {
+    return elm.itemDetails[0];
+  });
+  return this.res.reduce((acc, item) =>
+  acc + Number( Number(item.Prize)) * Number(item.Quanity), 0);
 }
 getFinalTAmount() {
-  return this.cart.items.reduce((acc, item) =>
-  acc + Number( Number(item.item.Prize)  *  Number(item.item.Quanity)) + Number(item.item.Tax), 0);
+  this.res = this.order.items.map((elm, i) => {
+    return elm.itemDetails[0];
+  });
+  return this.res.reduce((acc, item) =>
+  acc + Number( Number(item.Prize)  *  Number(item.Quanity)) + Number(item.Tax), 0);
 }
 getTax() {
-  return this.cart.items.reduce((acc, item) => acc + Number( Number(item.item.Tax)), 0);
+  this.res = this.order.items.map((elm, i) => {
+    return elm.itemDetails[0];
+  });
+  return this.res.reduce((acc, item) => acc + Number( Number(item.Tax)), 0);
 }
 getDisc() {
-  return this.cart.items.reduce((acc, item) => acc + Number( Number(item.item.disc)), 0);
+  this.res = this.order.items.map((elm, i) => {
+    return elm.itemDetails[0];
+  });
+  return this.res.reduce((acc, item) => acc + Number( Number(item.disc)), 0);
 }
 }
