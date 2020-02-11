@@ -44,7 +44,17 @@ constructor(
     this.order.items.MenuRID = item.DishID;
   }
   public exist(item) {
-    return this.order.items;
+    // this.res = this.order.items.map((elm, i) => {
+    //   return elm.itemDetails[0];
+    // });
+    // return this.res.filter(elm => {
+    //   console.log(elm.CategoryId , item.CategoryId);
+    //   return elm.CategoryId === item.CategoryId;
+    // });
+    // tslint:disable-next-line:no-unused-expression
+    // return this.order.items;
+    return this.order.items.filter(elm => elm.CategoryId === item.CategoryId).length;
+
   }
   public existtable(item) {
     return this.order.items.filter(elm => elm.TableRID === item.RID).length;
@@ -109,7 +119,7 @@ constructor(
     this.cartChanged();
   }
 addToCart(item) {
-  if (!this.existtable(item))  {
+  if (!this.exist(item) || !this.existtable(item))  {
       if (!this.order.items.TableName) {
           swall('You Should Select TableName');
       } else if (!this.order.items.DishName) {

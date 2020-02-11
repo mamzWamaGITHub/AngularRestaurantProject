@@ -164,11 +164,12 @@ export class CustomerComponent implements OnInit {
   }
   showTable() {
     this.showtable = true;
+    location.reload();
   }
   selectDish(table) {
     this.showdish = true;
     this.showtable = false;
     this.tablename = table.TableName;
-    // this.order.items = this.order.items.filter(elm =>  elm.TableRID === table.RID);
+    this.order.items = this.order.items.filter(elm =>  elm.TableRID === table.RID);
   }
 }
