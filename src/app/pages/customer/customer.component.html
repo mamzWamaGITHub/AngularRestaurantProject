@@ -48,7 +48,7 @@
       <div class="col meal-category" *ngFor="let subcategory of subcats">
         <div class="cat-bg" (click)="cartservice.addToCart(subcategory)">
           <span class="cat-name">{{subcategory.CategoryName}}</span>
-          <p class="cat-price">{{subcategory.Prize}} $</p>
+          <p class="cat-price">{{subcategory.Amount}} $</p>
         </div>
       </div>
     </div>
@@ -64,6 +64,18 @@
   <table class="table table-borderless order-table">
     <thead>
       <tr>
+        <th scope="col" class="bg-head">
+          <p class="order-title1">Table ID</p>
+        </th>
+        <th scope="col" class="bg-head">
+          <p class="order-title1">Company ID</p>
+        </th>
+        <th scope="col" class="bg-head">
+          <p class="order-title1">Menu ID</p>
+        </th>
+        <th scope="col" class="bg-head">
+          <p class="order-title1">Menu Category ID</p>
+        </th>
         <th scope="col" class="bg-head">
           <p class="order-title1">TableName</p>
         </th>
@@ -95,6 +107,26 @@
       <tr *ngFor="let item of itemm.itemDetails">
         <td  class="bg-content">
           <p class="order-title2"> 
+            {{itemm.TableRID}} 
+          </p>
+        </td>
+        <td  class="bg-content">
+          <p class="order-title2"> 
+            {{itemm.CompanyID}} 
+          </p>
+        </td>
+        <td  class="bg-content">
+          <p class="order-title2"> 
+            {{itemm.MenuRID}} 
+          </p>
+        </td>
+        <td  class="bg-content">
+          <p class="order-title2"> 
+            {{item.CategoryRID}} 
+          </p>
+        </td>
+        <td  class="bg-content">
+          <p class="order-title2"> 
             {{itemm.TableName}} 
           </p>
         </td>
@@ -106,21 +138,23 @@
         <td class="bg-content">
           <p class="order-title2"> 
             <span class="glyphicon glyphicon-minus minus" (click)="decreaseCount(item)">-</span>  
-            <span class="count"> {{item.Quanity}} </span>
+            <span class="count"> {{item.Quantity}} </span>
             <span class="glyphicon glyphicon-plus plus" (click)="increaseCount(item)">+</span>
           </p>
         </td>
         <td class="bg-content">
-          <p class="order-title2">$ {{(item.Prize * item.Quanity)}}</p>
+          <p class="order-title2">$ {{(item.Amount * item.Quantity)}}</p>
         </td>
         <td class="bg-content"> 
-          <p class="order-title2">{{item.disc || 0}}</p>
+          <p class="order-title2">{{item.DiscountCategories[0].disc }}
+            <!-- {{item.DiscountCategories[0].disc}} -->
+          </p>
         </td>
         <td class="bg-content">
           <p class="order-title2"> $ {{item.Tax}}</p>
         </td>
         <td class="bg-content">
-          <p class="order-title2" >$  {{(item.Prize * item.Quanity) + item.Tax}} </p>
+          <p class="order-title2" >$  {{(item.Amount * item.Quantity) + item.Tax}} </p>
         </td>
         <td class="bg-content">
           <p class="order-title2"       
@@ -129,7 +163,7 @@
           [popoverTitle]="popoverTitle"
           [popoverMessage]="popoverMessage"
           placement="left"
-          (confirm)="cartservice.deleteFromCart(itemm)"
+          (confirm)="cartservice.deleteFromCart(item)"
           (cancel)="cancelClicked = true">
           <mat-icon>cancel_presentation</mat-icon>
         </p>
@@ -139,11 +173,14 @@
     </tbody>
     <tfoot>
         <tr>
-          <th scope="col" class="foot-bg">
-            <p class="order-title1"> _  </p>
+          <th scope="col" colspan="4" class="foot-bg">
+            <p class="order-title1"> </p>
           </th>
           <th scope="col" class="foot-bg">
-            <p class="order-title1"> _  </p>
+            <p class="order-title1">   </p>
+          </th>
+          <th scope="col" class="foot-bg">
+            <p class="order-title1">   </p>
           </th>
           <th scope="col" class="foot-bg">
             <p class="order-title1">{{cartservice.getItemCount()}}</p>
@@ -164,7 +201,7 @@
           </th>
           <th scope="col" class="foot-bg">          
             <p class="order-title1">
-              -
+
             </p>
           </th>
         </tr>
@@ -180,7 +217,7 @@
       </div>
       <div class="col btn-order">
         <button  type="button" class="btn btn-light btn-lg btn-ord" (click)="cancelOrder()">Cancel Order</button> 
-        <button  type="button" class="btn btn-light btn-lg btn-ord" (click)="palceOrder()">Place Order</button> 
+        <button  type="button" class="btn btn-light btn-lg btn-ord" (click)="palceOrder(order.items)">Place Order</button> 
       </div>
     </div>
   </div>  

@@ -18,14 +18,14 @@ constructor(
     ) { }
   /**
    * Calc items Amount Prize
-   * @param items [{Prize: any, Quanity: any } ..]
+   * @param items [{Amount: any, Quantity: any } ..]
    */
   calcTotalAmount(items) {
     this.res = this.order.items.map((elm, i) => {
       return elm.itemDetails[0];
     });
     return   this.res.reduce((acc, item) =>
-    acc + Number( Number(item.Prize)  *  Number(item.Quanity)) + Number(item.Tax), 0);
+    acc + Number( Number(item.Amount)  *  Number(item.Quantity)) + Number(item.Tax), 0);
   }
   getTableId(item) {
     this.order.items.TableName = item.TableName;
@@ -42,6 +42,12 @@ constructor(
   getMealId(item) {
     this.order.items.DishName = item.DishName;
     this.order.items.MenuRID = item.DishID;
+    this.order.items.Amount = item.acc;
+    this.order.items.CategoryRID = item.CategoryRID;
+    this.order.items.TaxPercentage = item.TaxPercentage;
+    this.order.items.Quantity = item.Quantity;
+    //console.log("i item " + item.DishCategories[0].DiscountCategories[0].disc);
+    this.order.items.disc = item.disc;
   }
   public exist(item) {
     // this.res = this.order.items.map((elm, i) => {
@@ -53,7 +59,7 @@ constructor(
     // });
     // tslint:disable-next-line:no-unused-expression
     // return this.order.items;
-    return this.order.items.filter(elm => elm.CategoryId === item.CategoryId).length;
+    return this.order.items.filter(elm => elm.CategoryRID === item.CategoryRID).length;
 
   }
   public existtable(item) {
@@ -64,25 +70,25 @@ constructor(
       return elm.itemDetails[0];
     });
     this.order.items.itemDetails = this.res.map(item => {
-      item.Amount = item.Prize * item.Quanity;
+      item.Amount = item.Amount * item.Quantity;
       return item;
     });
     this.order.Amount = this.calcTotalAmount(this.order.items);
-    this.order.Quanity = this.getItemCount();
+    this.order.Quantity = this.getItemCount();
     this.storage.set('order', this.order);
   }
   increaseCount(item) {
     if (!this.exist(item)) {
-      item.Quanity = 1;
+      item.Quantity = 1;
       this.order.items.push([item]);
     } else {
       this.res = this.order.items.map((elm, i) => {
         return elm.itemDetails[0];
       });
       this.order.items.itemDetails = this.res.map(elm => {
-        elm.Quanity = Number(elm.Quanity);
-        if (elm.CategoryId === item.CategoryId) {
-          elm.Quanity =  elm.Quanity + 1;
+        elm.Quantity = Number(elm.Quantity);
+        if (elm.CategoryRID === item.CategoryRID) {
+          elm.Quantity =  elm.Quantity + 1;
         }
         return elm;
       });
@@ -94,20 +100,22 @@ constructor(
       return elm.itemDetails[0];
     });
     this.order.items.itemDetails = this.res.map(elm => {
-      if (elm.CategoryId === item.CategoryId) {
-          elm.Quanity--;
+      if (elm.CategoryRID === item.CategoryRID) {
+          elm.Quantity--;
       }
       return elm;
     });
     this.cartChanged();
   }
   find(item) {
-    return this.order.items.filter(i => i.CategoryId === item.CategoryId)[0];
+    return this.order.items.filter(i => i.CategoryRID === item.CategoryRID)[0];
   }
   public deleteFromCart(item) {
+   
     if (!this.exist(item)) { return; }
+    console.log(item);
     item.isincart = false;
-    this.order.items = this.order.items.filter(elm => elm.MenuRID !== item.MenuRID);
+    this.order.items = this.order.items.filter(elm => elm.CategoryRID !== item.CategoryRID);
     this.cartChanged();
     return this.order;
   }
@@ -119,12 +127,15 @@ constructor(
     this.cartChanged();
   }
 addToCart(item) {
+  console.log(item);
   if (!this.exist(item) || !this.existtable(item))  {
       if (!this.order.items.TableName) {
           swall('You Should Select TableName');
       } else if (!this.order.items.DishName) {
         swall('You Should Select DishName');
       } else {
+
+        
         item.isincart = true;
         this.order.items.push({
           TableName: this.order.items.TableName,
@@ -134,7 +145,12 @@ addToCart(item) {
           MenuRID: this.order.items.MenuRID,
           CustomerRID: this.order.items.CustomerRID,
           orderID: this.order.items.orderID,
-          itemDetails: [item]
+          disc: this.order.items.disc,
+          itemDetails: [item],
+          
+          PaymentDetails:[ {TotalAmount: '5000'}
+          ]
+
         });
         this.cartChanged();
       }
@@ -147,21 +163,21 @@ getItemCount() {
   this.res = this.order.items.map((elm, i) => {
     return elm.itemDetails[0];
   });
-  return this.res.reduce((acc, item) => acc + Number( Number(item.Quanity)), 0);
+  return this.res.reduce((acc, item) => acc + Number( Number(item.Quantity)), 0);
 }
 getItemTotalPrice() {
   this.res = this.order.items.map((elm, i) => {
     return elm.itemDetails[0];
   });
   return this.res.reduce((acc, item) =>
-  acc + Number( Number(item.Prize)) * Number(item.Quanity), 0);
+  acc + Number( Number(item.Amount)) * Number(item.Quantity), 0);
 }
 getFinalTAmount() {
   this.res = this.order.items.map((elm, i) => {
     return elm.itemDetails[0];
   });
   return this.res.reduce((acc, item) =>
-  acc + Number( Number(item.Prize)  *  Number(item.Quanity)) + Number(item.Tax), 0);
+  acc + Number( Number(item.Amount)  *  Number(item.Quantity)) + Number(item.Tax), 0);
 }
 getTax() {
   this.res = this.order.items.map((elm, i) => {
