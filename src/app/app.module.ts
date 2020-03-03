@@ -1,50 +1,28 @@
-import { LoaderService } from './services/loader/loader.service';
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { RouteReuseStrategy } from '@angular/router';
 
-import { AppComponent } from './app.component';
+import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { StatusBar } from '@ionic-native/status-bar/ngx';
+
 import { AppRoutingModule } from './app-routing.module';
-import { CustomerComponent } from './pages/customer/customer.component';
-import { StorageServiceModule } from 'ngx-webstorage-service';
-import { LocalStorageService } from './services/storage/storage.service';
+import { AppComponent } from './app.component';
 import { ApiService } from './services/api/api.service';
-import { CartService } from './services/cart/cart.service';
-import { LoaderComponent } from './pages/loader/loader.component';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ConfirmationPopoverModule } from 'angular-confirmation-popover';
-import { AlertComponent } from './pages/alert/alert.component';
-import { AlertService } from './services/alert/alert.service';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CustomMaterialModule } from './pages/custom-material/custom-material.module';
-import { MatIconModule } from '@angular/material';
+import { HttpClientModule } from '@angular/common/http';
+import { CartService } from './services/cart.service';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    CustomerComponent,
-    LoaderComponent,
-    AlertComponent,
-  ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    StorageServiceModule,
-    MatIconModule,
-    AppRoutingModule,
-    ConfirmationPopoverModule.forRoot({
-      confirmButtonType: 'danger' // set defaults here
-    }),
-    CustomMaterialModule,
-    BrowserAnimationsModule,
-  ],
+  declarations: [AppComponent],
+  entryComponents: [],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
   providers: [
-    LocalStorageService,
+    StatusBar,
+    SplashScreen,
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     ApiService,
     CartService,
-    LoaderService,
-    AlertService,
   ],
-  entryComponents: [AlertComponent],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
