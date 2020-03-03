@@ -1,0 +1,27 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>
+      Menu / Dishes
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size-sm="6" size-xs="6" size-md="4" size-lg="3" *ngFor="let meal of meals">
+        <ion-card (click)="showCategories(meal)">
+          <div style="overflow: hidden; max-height: 100pt;">
+            <img [src]="meal.image" alt="">
+          </div>
+
+          <ion-card-content>
+            {{meal.DishName}}
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

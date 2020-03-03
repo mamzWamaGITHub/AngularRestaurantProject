@@ -1,0 +1,53 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-title>
+            {{meal.DishName}}
+        </ion-title>
+        <ion-buttons slot="end">
+            <ion-button color="primary" (click)="cancel()">
+                Cacnel
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <img [src]="meal.image" alt="">
+    <ion-row>
+        <ion-col size="2">
+            <ion-button fill="clear" size="large" (click)="increaseQuantity()">
+                <ion-icon name="add-circle"></ion-icon>
+            </ion-button>
+        </ion-col>
+        <ion-col size="2" align-self-center>
+            <h3 class="ion-text-center">{{qty}}</h3>
+        </ion-col>
+        <ion-col size="2">
+            <ion-button fill="clear" size="large" (click)="decreaseQuantity()">
+                <ion-icon name="remove-circle"></ion-icon>
+            </ion-button>
+        </ion-col>
+    </ion-row>
+
+    <ion-list>
+        <ion-radio-group [(ngModel)]="selectedCategory">
+            <ion-item *ngFor="let category of meal.DishCategories">
+                <ion-radio slot="start" [value]="category"></ion-radio>
+                <ion-label>{{category.CategoryName}}</ion-label>
+
+                <ion-label slot="end">
+                    <div class="ion-text-end">
+                        {{category.Amount}}
+                    </div>
+                </ion-label>
+            </ion-item>
+        </ion-radio-group>
+    </ion-list>
+</ion-content>
+
+
+<ion-footer class="ion-no-border">
+    <ion-button expand="block" (click)="addToCart()">
+        Add To Cart {{selectedCategory.Amount * qty}}$
+    </ion-button>
+</ion-footer>
