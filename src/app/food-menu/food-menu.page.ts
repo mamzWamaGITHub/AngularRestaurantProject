@@ -4,6 +4,7 @@ import { LoadingController, ModalController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { Dish } from '../models/dish.model';
 import { FoodCategoryComponent } from './food-category/food-category.component';
+import { MenuService } from '../services/menu.service';
 
 @Component({
   selector: 'app-food-menu',
@@ -11,12 +12,10 @@ import { FoodCategoryComponent } from './food-category/food-category.component';
   styleUrls: ['food-menu.page.scss']
 })
 export class FoodMenuPage implements OnInit {
-  ParamCompanyID = '1'; //TODO: fix
-  ParamTableID = '1';
   meals: Dish[] = [];
 
   constructor(
-    private readonly api: ApiService,
+    private readonly menu: MenuService,
     private loadingCtrl: LoadingController,
     private route: ActivatedRoute,
     private modalCtrl: ModalController,
@@ -33,7 +32,7 @@ export class FoodMenuPage implements OnInit {
   private async _loadMeals() {
     const loading = await this.loadingCtrl.create();
     loading.present();
-    this.meals = await this.api.getData<Dish[]>('menus/' + this.ParamCompanyID).toPromise();
+    this.meals = await this.menu.getMenu();
     loading.dismiss();
   }
 

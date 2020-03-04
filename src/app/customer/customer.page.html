@@ -9,7 +9,9 @@
     <ion-tab-button tab="shopping-cart">
       <ion-icon name="cart"></ion-icon>
       <ion-label>Cart</ion-label>
-      <ion-badge *ngIf="cartItemCount > 0" color="danger">{{cartItemCount}}</ion-badge>
+      <ion-badge style="font-size: 10pt; padding-right: 2pt; padding-left: 2pt;" *ngIf="cartItemCount > 0"
+        color="danger">{{cartItemCount}}
+      </ion-badge>
     </ion-tab-button>
 
     <ion-tab-button tab="tab3">

@@ -1,0 +1,27 @@
+<ion-content>
+  <ion-slides pager="true" [options]="slideOpts">
+    <ion-slide class="step-one">
+      <ion-icon name="restaurant-outline"></ion-icon>
+      <h1>Step 1: Select Your Food</h1>
+      <p>
+        Browse and select food from our wide range of delicious dishes,
+      </p>
+      <ion-button (click)="next()" color="light">Next</ion-button>
+
+    </ion-slide>
+    <ion-slide class="step-two">
+      <ion-icon name="cart-outline"></ion-icon>
+      <h1>Step 2: Place Your Order</h1>
+      <p>
+        Review your order, and track it while it's being prepared
+      </p>
+      <ion-button (click)="next()" color="light">Next</ion-button>
+    </ion-slide>
+    <ion-slide class="step-three">
+      <ion-icon name="happy-outline"></ion-icon>
+      <h1>Step 3: Enjoy you meal</h1>
+      <p></p>
+      <ion-button (click)="finsih()" color="light">Finish</ion-button>
+    </ion-slide>
+  </ion-slides>
+</ion-content>

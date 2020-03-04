@@ -11,6 +11,8 @@ import { AppComponent } from './app.component';
 import { ApiService } from './services/api/api.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CartService } from './services/cart.service';
+import { MenuService } from './services/menu.service';
+import { QrAuthService } from './services/qr-auth.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,6 +24,8 @@ import { CartService } from './services/cart.service';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     ApiService,
     CartService,
+    MenuService,
+    QrAuthService,
   ],
   bootstrap: [AppComponent]
 })

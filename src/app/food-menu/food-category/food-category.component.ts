@@ -1,7 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { Dish, DishCategory as DishCategory } from 'src/app/models/dish.model';
+import { Dish } from 'src/app/models/dish.model';
 import { CartService } from 'src/app/services/cart.service';
+import { DishCategory } from 'src/app/models/dish-category.model';
 
 @Component({
   selector: 'app-food-category',
@@ -28,7 +29,7 @@ export class FoodCategoryComponent implements OnInit {
   }
 
   addToCart() {
-    this.cartService.addToCart(this.meal, this.selectedCategory, this.qty);
+    this.cartService.addToCart(this.selectedCategory, this.qty);
     this.modalCtrl.dismiss();
   }
 
