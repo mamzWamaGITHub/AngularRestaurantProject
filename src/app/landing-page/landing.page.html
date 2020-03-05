@@ -1,5 +1,7 @@
 <ion-content>
-  <ion-slides pager="true" [options]="slideOpts">
+  <ion-slides pager="true" [options]="slideOpts" *ngIf="showTutorial">
+
+    <!-- STEP ONE -->
     <ion-slide class="step-one">
       <ion-icon name="restaurant-outline"></ion-icon>
       <h1>Step 1: Select Your Food</h1>
@@ -7,8 +9,9 @@
         Browse and select food from our wide range of delicious dishes,
       </p>
       <ion-button (click)="next()" color="light">Next</ion-button>
-
     </ion-slide>
+
+    <!-- STEP TWO -->
     <ion-slide class="step-two">
       <ion-icon name="cart-outline"></ion-icon>
       <h1>Step 2: Place Your Order</h1>
@@ -17,11 +20,24 @@
       </p>
       <ion-button (click)="next()" color="light">Next</ion-button>
     </ion-slide>
+
+    <!-- STEP THREE -->
     <ion-slide class="step-three">
       <ion-icon name="happy-outline"></ion-icon>
       <h1>Step 3: Enjoy you meal</h1>
-      <p></p>
+      <p> </p>
       <ion-button (click)="finsih()" color="light">Finish</ion-button>
     </ion-slide>
+
   </ion-slides>
+
+
+  <ion-row class="ion-align-items-center ion-justify-content-center error-message" *ngIf="verificationFailed">
+    <div class="ion-text-center">
+      <ion-icon name="qr-code-sharp"></ion-icon>
+      <h1>Error: Invalid QR Code</h1>
+      <ion-button (click)="retry()" color="light">Retry</ion-button>
+    </div>
+  </ion-row>
+
 </ion-content>

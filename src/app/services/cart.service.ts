@@ -67,7 +67,7 @@ export class CartService {
     }
 
 
-    initNewCart(): Cart {
+    createNewCart(): Cart {
         const qrAuth = this.qrAuthService.qrAuthModel.value;
         return {
             order: {
@@ -88,11 +88,13 @@ export class CartService {
 
     addToCart(dishCategory: DishCategory, quantity: number) {
         if (this.cart.value === null) {
-            this.cart.next(this.initNewCart());
+            this.cart.next(this.createNewCart());
         }
 
         let added = false;
-        for (const item of this.cart.value.itemDetails) {
+
+        const newItems = this.cart.value.itemDetails.filter(item => item.ItemOrderStatus === null);
+        for (const item of newItems) {
             if (item.CategoryRID === dishCategory.CategoryRID) {
                 const newQuantity = item.Quantity + quantity;
                 this.updateItemQuantity(item, newQuantity);
