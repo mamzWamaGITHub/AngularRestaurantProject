@@ -4,10 +4,10 @@ import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-tabs',
-  templateUrl: 'tabs.page.html',
-  styleUrls: ['tabs.page.scss']
+  templateUrl: 'customer.page.html',
+  styleUrls: ['customer.page.scss']
 })
-export class TabsPage {
+export class CustomerPage {
   cartItemCount = 0;
   constructor(private readonly cartService: CartService) {
     this.cartService.getCartItemCount().subscribe((value) => {

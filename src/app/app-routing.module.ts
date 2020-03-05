@@ -4,8 +4,18 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
-  }
+    loadChildren: () => import('./customer/customer.module').then(m => m.TabsPageModule)
+  },
+  {
+    path: 'customer/:tableID/:companyID/:qrCode',
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('./landing-page/landing-page.module').then(m => m.LandingPageModule)
+      }
+    ]
+  },
 ];
 @NgModule({
   imports: [
@@ -13,4 +23,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

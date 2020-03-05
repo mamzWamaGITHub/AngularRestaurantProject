@@ -7,136 +7,198 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-grid *ngIf="orders.length == 0" style="height: 100%;">
-    <ion-row class="ion-justify-content-center ion-align-items-center" style="height: 100%;">
-      <ion-col size="12" class="ion-align-self-center">
-        <h1 class="ion-text-center">
-          <ion-icon name="alert-circle" style="font-size: 120pt;" color="primary"></ion-icon>
-          <br>
-          You didnt order any food
-          <br>
-          <br>
-          <ion-button [routerLink]="['/tabs/food-menu']" class="ion-text-center">
-            GO TO MENU
-          </ion-button>
-        </h1>
+  <ion-grid class="ion-no-padding">
+    <ion-row class="ion-no-padding">
+      <ion-col
+        sizeSm="12"
+        offsetMd="3"
+        sizeMd="6"
+        offsetLg="4"
+        sizeLg="4"
+        class="align-self-center"
+      >
+        <!-- EMPTY CART MESSAGE -->
+        <div *ngIf="cartIsEmpty()">
+          <ion-row
+            class="ion-justify-content-center ion-align-items-center"
+            style="height: 100%;"
+          >
+            <ion-col size="12" class="ion-align-self-center">
+              <h1 class="ion-text-center">
+                <ion-icon
+                  name="alert-circle"
+                  style="font-size: 120pt;"
+                  color="primary"
+                ></ion-icon>
+                <br />
+                You didnt order any food
+                <br />
+                <br />
+                <ion-button
+                  [routerLink]="['/tabs/food-menu']"
+                  class="ion-text-center"
+                >
+                  GO TO MENU
+                </ion-button>
+              </h1>
+            </ion-col>
+          </ion-row>
+        </div>
+
+        <!-- ITEMS LIST -->
+        <ion-card *ngIf="cart != null">
+          <ion-list #itemsList class="ion-no-padding" appAnimateItems>
+            <ion-item-sliding
+              *ngFor="let item of cart.itemDetails"
+              #slidingItem
+              (ionDrag)="onItemDrag($event)"
+              (click)="openItem(slidingItem)"
+              [disabled]="item.ItemOrderStatus != null"
+            >
+              <!-- SLIDING OPTIONS -->
+              <ion-item-options side="start">
+                <ion-item-option (click)="editItem(item)">Edit</ion-item-option>
+                <ion-item-option color="danger" (click)="removeItem(item)"
+                  >Remove</ion-item-option
+                >
+              </ion-item-options>
+
+              <!-- ITEM DETAILS -->
+              <ion-item lines="full">
+                <!-- ITEM ORDER STATUS -->
+                <ion-row slot="start" *ngIf="item.ItemOrderStatus != null">
+                  <ion-col>
+                    <div class="ion-text-center">
+                      <ion-icon
+                        style="font-size: 20pt;"
+                        class="ion-text-center"
+                        [name]="getIconName(item)"
+                      ></ion-icon>
+                      <br />
+                      <small> {{getItemStatus(item)}} </small>
+                    </div>
+                  </ion-col>
+                </ion-row>
+                <!-- <ion-icon slot="start" name="add-outline"></ion-icon> -->
+
+                <!-- DISH NAME -->
+                <ion-label>
+                  <h2>{{getDish(item.CategoryRID).DishName}}</h2>
+                  <p>{{getCategory(item.CategoryRID).CategoryName}}</p>
+                </ion-label>
+
+                <!-- ITEM TOTAL -->
+                <ion-row slot="end">
+                  <ion-col>
+                    <div class="ion-text-end">
+                      {{item.Amount | currency}}
+                      <br />
+                      <ion-text
+                        style="font-size: 9pt; font-style: italic;"
+                        color="medium"
+                        >{{item.Quantity}} x {{item.Amount / item.Quantity |
+                        currency}}
+                      </ion-text>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-item>
+            </ion-item-sliding>
+          </ion-list>
+          <!-- CARD ACTIONS -->
+
+          <!-- IN PROGRESS -->
+          <!-- <ion-item *ngIf="order.status != 'DRAFT'">
+            <ion-label>{{statusDisplayName(order.status)}}</ion-label>
+            <ion-spinner *ngIf="order.status == 'IN_PROGRESS'" slot="start" name="circles"></ion-spinner>
+            <ion-spinner *ngIf="order.status == 'PENDING'" slot="start" name="dots"></ion-spinner>
+            <ion-icon *ngIf="order.status == 'COMPLETED'" slot="start" name="checkmark-done"></ion-icon>
+          </ion-item> -->
+        </ion-card>
+
+        <ion-card *ngIf="cartIsEmpty() == false">
+          <ion-list class="ion-no-padding">
+            <!-- SUBTOTAL -->
+            <ion-item lines="full" class="ion-no-padding ion-no-margin">
+              <!-- <ion-label class="ion-no-padding ion-no-margin"></ion-label> -->
+              <ion-label class="ion-no-padding ion-no-margin">
+                <div class="ion-text-end">
+                  <b>SUBTOTAL</b>
+                </div>
+              </ion-label>
+              <ion-label slot="end">
+                <div class="ion-text-end">
+                  <b>{{subTotal | currency}}</b>
+                </div>
+              </ion-label>
+            </ion-item>
+
+            <!-- Discount -->
+            <ion-item lines="full" class="ion-no-padding ion-no-margin">
+              <!-- <ion-label class="ion-no-padding ion-no-margin"></ion-label> -->
+              <ion-label class="ion-no-padding ion-no-margin">
+                <div class="ion-text-end">
+                  Discount
+                </div>
+              </ion-label>
+              <ion-label slot="end">
+                <div class="ion-text-end">
+                  - {{discountTotal | currency}}
+                </div>
+              </ion-label>
+            </ion-item>
+
+            <!-- TAX -->
+            <ion-item lines="full" class="ion-no-padding ion-no-margin">
+              <!-- <ion-label class="ion-no-padding ion-no-margin"></ion-label> -->
+              <ion-label class="ion-no-padding ion-no-margin">
+                <div class="ion-text-end">
+                  TAX
+                </div>
+              </ion-label>
+              <ion-label slot="end">
+                <div class="ion-text-end">
+                  + {{taxTotal | currency}}
+                </div>
+              </ion-label>
+            </ion-item>
+
+            <!-- TOTAL -->
+            <ion-item lines="full" class="ion-no-padding ion-no-margin">
+              <!-- <ion-label class="ion-no-padding ion-no-margin"></ion-label> -->
+              <ion-label class="ion-no-padding ion-no-margin">
+                <div class="ion-text-end">
+                  <h1>TOTAL</h1>
+                </div>
+              </ion-label>
+              <ion-label slot="end">
+                <div class="ion-text-end">
+                  <h1>{{total | currency}}</h1>
+                </div>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>
-
-  <ion-card *ngFor="let order of orders">
-    <ion-list #itemsList class="ion-no-padding">
-      <ion-item-sliding *ngFor="let item of order.items" #slidingItem (ionDrag)="onItemDrag($event)"
-        (click)="openItem(slidingItem)" [disabled]="order.status != 'DRAFT'">
-        <ion-item-options side="start">
-          <ion-item-option (click)="editItem(order, item)">Edit</ion-item-option>
-          <ion-item-option color="danger" (click)="removeItem(order, item)">Remove</ion-item-option>
-        </ion-item-options>
-
-        <ion-item lines="full">
-          <ion-label>
-            <h2>{{item.dish.DishName}}</h2>
-            <p>{{item.dishCategory.CategoryName}}</p>
-          </ion-label>
-          <ion-label slot="end" class="ion-no-padding ion-no-margin">
-            <div class="ion-text-end">
-              x{{item.quantity}}
-            </div>
-          </ion-label>
-          <ion-label slot="end">
-            <div class="ion-text-end">
-              {{item.quantity * item.dishCategory.Amount | currency}}
-            </div>
-          </ion-label>
-        </ion-item>
-      </ion-item-sliding>
-
-    </ion-list>
-    <!-- CARD ACTIONS -->
-    <!-- <ion-row *ngIf="order.status == 'DRAFT'">
-      <ion-col>
-        <ion-button color="danger" fill="clear" (click)="emptyCart(order)">Empty Cart</ion-button>
-      </ion-col>
-      <ion-col>
-        <ion-button expand="block" (click)="placeOrder(order)">PLACE ORDER</ion-button>
-      </ion-col>
-    </ion-row> -->
-
-    <!-- IN PROGRESS -->
-    <ion-item *ngIf="order.status != 'DRAFT'">
-      <ion-label>{{statusDisplayName(order.status)}}</ion-label>
-      <ion-spinner *ngIf="order.status == 'IN_PROGRESS'" slot="start" name="circles"></ion-spinner>
-      <ion-spinner *ngIf="order.status == 'PENDING'" slot="start" name="dots"></ion-spinner>
-      <ion-icon *ngIf="order.status == 'COMPLETED'" slot="start" name="checkmark-done"></ion-icon>
-    </ion-item>
-
-  </ion-card>
-
-  <ion-card *ngIf="orders.length > 0">
-    <ion-list class="ion-no-padding">
-      <!-- SUBTOTAL -->
-      <ion-item lines="full" class="ion-no-padding ion-no-margin">
-        <!-- <ion-label class="ion-no-padding ion-no-margin"></ion-label> -->
-        <ion-label class="ion-no-padding ion-no-margin">
-          <div class="ion-text-end">
-            <b>SUBTOTAL</b>
-          </div>
-        </ion-label>
-        <ion-label slot="end">
-          <div class="ion-text-end">
-            <b>{{subTotal | currency}}</b>
-          </div>
-        </ion-label>
-      </ion-item>
-
-      <!-- Discount -->
-      <ion-item lines="full" class="ion-no-padding ion-no-margin">
-        <!-- <ion-label class="ion-no-padding ion-no-margin"></ion-label> -->
-        <ion-label class="ion-no-padding ion-no-margin">
-          <div class="ion-text-end">
-            Discount
-          </div>
-        </ion-label>
-        <ion-label slot="end">
-          <div class="ion-text-end">
-            - {{discountTotal | currency}}
-          </div>
-        </ion-label>
-      </ion-item>
-
-      <!-- TAX -->
-      <ion-item lines="full" class="ion-no-padding ion-no-margin">
-        <!-- <ion-label class="ion-no-padding ion-no-margin"></ion-label> -->
-        <ion-label class="ion-no-padding ion-no-margin">
-          <div class="ion-text-end">
-            TAX
-          </div>
-        </ion-label>
-        <ion-label slot="end">
-          <div class="ion-text-end">
-            + {{taxTotal | currency}}
-          </div>
-        </ion-label>
-      </ion-item>
-
-      <!-- TOTAL -->
-      <ion-item lines="full" class="ion-no-padding ion-no-margin">
-        <!-- <ion-label class="ion-no-padding ion-no-margin"></ion-label> -->
-        <ion-label class="ion-no-padding ion-no-margin">
-          <div class="ion-text-end">
-            <h1>TOTAL</h1>
-          </div>
-        </ion-label>
-        <ion-label slot="end">
-          <div class="ion-text-end">
-            <h1>{{total | currency}}</h1>
-          </div>
-        </ion-label>
-      </ion-item>
-    </ion-list>
-  </ion-card>
 </ion-content>
 
-<ion-footer *ngIf="orders.length > 0" class="ion-padding ion-no-border">
-  <ion-button expand="block" (click)="placeOrder()">PLACE ORDER</ion-button>
+<ion-footer *ngIf="cartIsEmpty() == false" class="ion-padding ion-no-border">
+  <ion-grid class="ion-no-padding">
+    <ion-row class="ion-no-padding">
+      <ion-col
+        sizeSm="12"
+        offsetMd="3"
+        sizeMd="6"
+        offsetLg="4"
+        sizeLg="4"
+        class="align-self-center"
+      >
+        <ion-button expand="block" (click)="placeOrder()"
+          >PLACE ORDER</ion-button
+        >
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-footer>

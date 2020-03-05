@@ -4,14 +4,14 @@ import { Observable, of } from 'rxjs';
 import { map, catchError, tap, startWith } from 'rxjs/operators';
 
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
+import { SERVER_URL } from 'src/app/config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
   private data: any;
-  private url = 'http://aa.calibrecue.com/api/';
-  //private url = 'http://localhost:52161/api/';
+  private url = SERVER_URL;
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'

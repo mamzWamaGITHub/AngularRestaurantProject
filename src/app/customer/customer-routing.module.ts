@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TabsPage } from './tabs.page';
+import { CustomerPage } from './customer.page';
 
 const routes: Routes = [
   {
-    path: 'tabs',
-    component: TabsPage,
+    path: 'customer',
+    component: CustomerPage,
     children: [
       {
         path: 'food-menu',
@@ -46,7 +46,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/tabs/food-menu',
+    redirectTo: '/customer/food-menu',
     pathMatch: 'full'
   }
 ];

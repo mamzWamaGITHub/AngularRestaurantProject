@@ -1,8 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { Dish, DishCategory } from 'src/app/models/dish.model';
 import { CartService } from 'src/app/services/cart.service';
-import { CartItem } from 'src/app/models/cart-item.model';
+import { ItemDetail } from 'src/app/models/item-detail.model';
+import { Dish } from 'src/app/models/dish.model';
+import { DishCategory } from 'src/app/models/dish-category.model';
+import { MenuService } from 'src/app/services/menu.service';
 
 @Component({
   selector: 'app-edit-quantity',
@@ -10,18 +12,23 @@ import { CartItem } from 'src/app/models/cart-item.model';
   styleUrls: ['./edit-quantity.component.css']
 })
 export class EditQuantityComponent implements OnInit {
-  @Input() cartItem: CartItem;
+  @Input() itemDetail: ItemDetail;
 
+  dish: Dish;
+  dishCategory: DishCategory;
 
   qty = 1;
 
   constructor(
     private modalCtrl: ModalController,
     private cartService: CartService,
-  ) { }
-
+    private menuService: MenuService,
+  ) {
+  }
   ngOnInit() {
-    this.qty = this.cartItem.quantity;
+    this.qty = this.itemDetail.Quantity;
+    this.dish = this.menuService.getDish(this.itemDetail.CategoryRID);
+    this.dishCategory = this.menuService.getDishCategory(this.itemDetail.CategoryRID);
   }
 
   cancel() {
@@ -29,7 +36,7 @@ export class EditQuantityComponent implements OnInit {
   }
 
   updateCart() {
-    this.cartService.updateItemQuantity(this.cartItem, this.qty);
+    this.cartService.updateItemQuantity(this.itemDetail, this.qty);
     this.modalCtrl.dismiss();
   }
 
