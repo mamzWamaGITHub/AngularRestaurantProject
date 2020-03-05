@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { LandingPage } from './landing.page';
+import { ErrorPage } from './error.page';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
@@ -12,8 +12,8 @@ import { RouterModule } from '@angular/router';
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild([{ path: '', component: LandingPage }])
+    RouterModule.forChild([{ path: '', component: ErrorPage }])
   ],
-  declarations: [LandingPage]
+  declarations: [ErrorPage]
 })
-export class LandingPageModule { }
+export class ErrorPageModule { }

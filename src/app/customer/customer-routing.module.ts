@@ -44,11 +44,6 @@ const routes: Routes = [
       }
     ]
   },
-  {
-    path: '',
-    redirectTo: '/customer/food-menu',
-    pathMatch: 'full'
-  }
 ];
 
 @NgModule({
