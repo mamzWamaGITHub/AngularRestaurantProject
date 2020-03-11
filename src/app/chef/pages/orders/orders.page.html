@@ -4,7 +4,7 @@
             Incoming Orders
         </ion-title>
     </ion-toolbar>
-    <ion-toolbar>
+    <ion-toolbar *ngIf="tables == null">
         <ion-toolbar>
             <ion-segment scrollable [value]="selectedTable">
                 <ion-segment-button *ngFor="let table of tables" [value]="table" (click)="setSelectedTable(table)">

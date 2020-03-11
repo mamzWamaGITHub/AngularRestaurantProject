@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { OrdersService } from '../../services/orders.services';
 import { InProgressTable } from '../../models/in-progress-table.model';
 import { InProgressItem } from 'src/app/chef/models/in-progress-item.model';
+import { LoadingController, AlertController } from '@ionic/angular';
 
 @Component({
   templateUrl: './orders.page.html',
@@ -13,7 +14,9 @@ export class OrdersPage implements OnInit {
   items: InProgressItem[];
 
   constructor(
-    private readonly ordersService: OrdersService
+    private readonly ordersService: OrdersService,
+    private readonly loadingCtrl: LoadingController,
+    private readonly alertCtrl: AlertController,
   ) { }
 
   ngOnInit() {
@@ -21,13 +24,39 @@ export class OrdersPage implements OnInit {
   }
 
   private async getTables() {
-    this.tables = await this.ordersService.getTables();
-    this.setSelectedTable(this.tables[0]); // TOOD: remove this line
+    const loading = await this.loadingCtrl.create();
+    loading.present();
+    try {
+      this.tables = await this.ordersService.getTables();
+      if (this.tables && this.tables.length > 0) {
+        this.setSelectedTable(this.tables[0]); // TOOD: remove this line
+      }
+    } catch (error) {
+      (await this.alertCtrl.create({
+        message: error.message,
+        buttons: ['OK']
+      })).present();
+    }
+    loading.dismiss();
   }
 
   async setSelectedTable(table: InProgressTable) {
+    if (table === this.selectedTable) {
+      return;
+    }
     this.selectedTable = table;
     console.log(this.selectedTable);
-    this.items = await this.ordersService.getCartItemByTables(table.CustomerRID);
+
+    const loading = await this.loadingCtrl.create();
+    loading.present();
+    try {
+      this.items = await this.ordersService.getCartItemByTables(table.CustomerRID);
+    } catch (error) {
+      (await this.alertCtrl.create({
+        message: error.message,
+        buttons: ['OK']
+      })).present();
+    }
+    loading.dismiss();
   }
 }
