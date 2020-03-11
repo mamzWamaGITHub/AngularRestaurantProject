@@ -1,0 +1,76 @@
+<ion-header [translucent]="true">
+    <ion-toolbar color="primary">
+        <ion-title>
+            Incoming Orders
+        </ion-title>
+    </ion-toolbar>
+    <ion-toolbar>
+        <ion-toolbar>
+            <ion-segment scrollable [value]="selectedTable">
+                <ion-segment-button *ngFor="let table of tables" [value]="table" (click)="setSelectedTable(table)">
+                    <ion-icon name="person"></ion-icon>
+                    <ion-label>{{table.TableName}}</ion-label>
+                    <ion-badge>{{table.OrderStatus.length}}</ion-badge>
+                </ion-segment-button>
+            </ion-segment>
+        </ion-toolbar>
+    </ion-toolbar>
+</ion-header>
+
+
+<ion-content [fullscreen]="true" *ngIf="items != null">
+    <ion-grid>
+        <ion-row>
+            <ion-col *ngFor="let item of items" sizeXs="12" sizeMd="6" sizeLg="4">
+                <ion-card>
+                    <ion-item lines="none">
+                        <ion-text color="primary" slot="start">
+                            <b>x{{item.Quantity}}</b>
+                        </ion-text>
+                        <ion-label>{{item.DishName}} - {{item.CategoryName}}</ion-label>
+                    </ion-item>
+                    <ion-row>
+                        <ion-col size="4">
+                            <ion-button size="small" fill="clear" color="danger">
+                                <ion-icon slot="start" name="close"></ion-icon>
+                                REJECT
+                            </ion-button>
+                        </ion-col>
+                        <ion-col size="8">
+                            <ion-button size="small" fill="solid" color="success"
+                                class="ion-float-right ion-margin-horizontal">
+                                <ion-icon slot="start" name="checkmark-done-circle"></ion-icon>
+                                READY
+                            </ion-button>
+                            <ion-button size="small" fill="outline" class="ion-float-right">
+                                <ion-icon slot="start" name="checkmark"></ion-icon>
+                                ACCEPT
+                            </ion-button>
+                        </ion-col>
+                    </ion-row>
+
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+
+    <ion-row class="ion-justify-content-center">
+        <ion-col sizeXl="6" sizeLg="8" sizeMd="10" sizeSm="12">
+            <ion-row>
+                <ion-col size="4">
+                    <ion-button expand="block">Cancel (All)</ion-button>
+                </ion-col>
+                <ion-col size="4">
+                    <ion-button expand="block">Ready (All)</ion-button>
+                </ion-col>
+                <ion-col size="4">
+                    <ion-button expand="block">Accept (All)</ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-col>
+    </ion-row>
+
+</ion-footer>
