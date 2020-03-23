@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { TabsPageRoutingModule } from './customer-routing.module';
+import { CustomerRoutingModule } from './customer-routing.module';
 
 import { CustomerPage } from './customer.page';
 
@@ -12,7 +12,7 @@ import { CustomerPage } from './customer.page';
     IonicModule,
     CommonModule,
     FormsModule,
-    TabsPageRoutingModule
+    CustomerRoutingModule
   ],
   declarations: [CustomerPage]
 })

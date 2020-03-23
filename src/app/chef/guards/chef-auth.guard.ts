@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { QrAuthService } from '../services/qr-auth.service';
+import { ChefAuthService } from '../services/chef-auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class QrAuthGuard implements CanActivate {
+export class ChefAuthGuard implements CanActivate {
   constructor(
-    private readonly qrAuthService: QrAuthService,
+    private readonly chefAuthService: ChefAuthService,
     private readonly router: Router
   ) { }
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (this.qrAuthService.qrAuthModel.value === null) {
-      return this.router.navigateByUrl('/error');
+    if (this.chefAuthService.chefAuthModel.value === null) {
+      return this.router.navigateByUrl('/chef/login');
     }
     return true;
   }

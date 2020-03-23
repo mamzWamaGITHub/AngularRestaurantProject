@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { QrAuthGuard } from './guards/qr-auth.guard';
+import { QrAuthGuard } from './customer/guards/qr-auth.guard';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'customer',
     loadChildren: () => import('./customer/customer.module').then(m => m.TabsPageModule),
     canActivate: [QrAuthGuard],
   },
@@ -15,6 +15,16 @@ const routes: Routes = [
         path: '',
         loadChildren: () =>
           import('./landing-page/landing-page.module').then(m => m.LandingPageModule)
+      }
+    ]
+  },
+  {
+    path: 'chef',
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('./chef/chef.module').then(m => m.ChefModule)
       }
     ]
   },
@@ -32,7 +42,7 @@ const routes: Routes = [
     path: '',
     redirectTo: '/error',
     pathMatch: 'full'
-  }
+  },
 ];
 @NgModule({
   imports: [

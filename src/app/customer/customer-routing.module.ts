@@ -4,7 +4,7 @@ import { CustomerPage } from './customer.page';
 
 const routes: Routes = [
   {
-    path: 'customer',
+    path: '',
     component: CustomerPage,
     children: [
       {
@@ -39,7 +39,7 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/tabs/food-menu',
+        redirectTo: '/customer/food-menu',
         pathMatch: 'full'
       }
     ]
@@ -50,4 +50,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class TabsPageRoutingModule { }
+export class CustomerRoutingModule { }

@@ -1,9 +1,13 @@
 <ion-content>
-  <ion-row class="ion-align-items-center ion-justify-content-center error-message">
-    <div class="ion-text-center">
+  <ion-row
+    class="ion-align-items-center ion-justify-content-center error-message"
+  >
+    <!-- Invalid QR code -->
+    <div class="ion-text-center" *ngIf="errorCode == null">
       <ion-icon name="qr-code-outline"></ion-icon>
       <h1>Please scan QR code on tables first</h1>
     </div>
-  </ion-row>
 
+    <!-- 404 -->
+  </ion-row>
 </ion-content>
